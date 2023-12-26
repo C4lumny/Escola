@@ -1,10 +1,10 @@
 const app = require("./app");
-const { sequelize } = require("./database/database");
+const { pool } = require("./database/database");
 const PORT = process.env.PORT || 3000;
 
 const main = async () => {
   try {
-    await sequelize.sync({force: false});
+    await pool.connect();
     app.listen(PORT, () => {
       console.log("Server listening on PORT:", PORT);
     });

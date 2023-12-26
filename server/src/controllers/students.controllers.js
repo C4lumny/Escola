@@ -1,5 +1,5 @@
-const { Sequelize } = require('sequelize');
-const { sequelize } = require("../database/database");
+const { pool } = require("../database/database");
+const { Pool } = require('pg');
 
 const getStudent = (req, res) => {
   res.send("Getting student");
@@ -7,7 +7,7 @@ const getStudent = (req, res) => {
 
 const getAllStudents = async (req, res) => {
   try {
-    const students = await sequelize.query("SELECT * FROM estudiantes", { type: Sequelize.QueryTypes.SELECT });
+    const { rows: students } = await pool.query("SELECT * FROM estudiantes");
     res.json(students);
   } catch (err) {
     res.status(500).json({ error: err.message });
