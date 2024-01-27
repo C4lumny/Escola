@@ -6,7 +6,7 @@ const authController = require('../controllers/auth.controllers');
 router.post('/registro/estudiante', authController.registroEstudiante);
 router.post('/registro/profesor', authController.registroProfesor);
 router.post('/registro/acudiente', authController.registroAcudiente);
-router.post('/signup/administrators', authController.registroAdministrador);
+router.post('/registro/administradores', authController.registroAdministrador);
 
 // Rutas de inicio de sesión
 router.post('/login', authController.login);

@@ -1,5 +1,8 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { Login } from "./pages/Login";
+import { Role } from "./components/Role";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { UserProvider } from "./contexts/UserProvider";
 import { useEffect } from "react";
 
 const App = () => {
@@ -7,16 +10,35 @@ const App = () => {
 
   useEffect(() => {
     let title = "Escola";
-    if (location.pathname === "/") {
+    if (location.pathname === "/Login") {
       title += " - Login";
     }
-    
+
     document.title = title;
   }, [location]);
 
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      {/* 👇 Ruta principal que redirige al login */}
+      <Route index element={<Navigate to="/Login" />} />
+      <Route
+        path="/Login"
+        element={
+          <UserProvider>
+            <Login />
+          </UserProvider>
+        }
+      />
+      <Route
+        path="/Panel/:role"
+        element={
+          <UserProvider>
+            <ProtectedRoute>
+              <Role />
+            </ProtectedRoute>
+          </UserProvider>
+        }
+      />
     </Routes>
   );
 };

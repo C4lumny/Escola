@@ -22,4 +22,7 @@ const verificarContraseña = async (passwordIngresada, passwordHasheada) => {
     }
   };
 
-module.exports = encriptarContraseña;
+module.exports = {
+  encriptarContraseña,
+  verificarContraseña,
+}
