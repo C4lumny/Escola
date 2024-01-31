@@ -5,6 +5,7 @@ const pool = new Pool({
   database: 'escoladb',
   password: 'HcD0TKSOj7ls',
   port: 5432,
+  ssl: true,
 });
 
 module.exports = {
