@@ -45,7 +45,7 @@ export const Teachers = () => {
   ];
 
   return (
-    <div className="flex justify-center w-full min-h-screen h-full items-center overflow-hidden">
+    <div className="flex justify-center w-full min-h-screen h-full items-center overflow-hidden py-20">
       <div className="hidden p-20 md:block bg-white w-4/5 border border-zinc-300 rounded-md shadow-md">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-semibold tracking-tight">Profesores</h2>

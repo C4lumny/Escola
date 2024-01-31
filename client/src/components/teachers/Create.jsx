@@ -143,7 +143,7 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="jesus_profesor" {...field} />
                 </FormControl>
-                <FormDescription>Teléfono del docente, información relevante de contacto</FormDescription>
+                <FormDescription>Usuario del docente, importante para el inicio de sesión</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -158,7 +158,7 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="**************" type="password" {...field} />
                 </FormControl>
-                <FormDescription>Teléfono del docente, información relevante de contacto</FormDescription>
+                <FormDescription>Contraseña del docente, importante para el inicio de sesión</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
