@@ -7,8 +7,8 @@ export function useGet(endpoint) {
 
   useEffect(() => {
     setLoading(true);
-    // fetch(`https://sadieapi.onrender.com/${endpoint}`, {
-      fetch(`http://localhost:3000/${endpoint}`, {
+    fetch(`https://sadieapi.onrender.com/${endpoint}`, {
+      // fetch(`http://localhost:3000/${endpoint}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
