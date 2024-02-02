@@ -1,7 +1,7 @@
 // 👇 dev imports
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { usePost } from "../hooks/usePost";
+import { useRequest } from "../hooks/useRequest";
 import { useUserContext } from "../contexts/UserProvider";
 // 👇 Pages or assets
 import niñosEstudiando from "../assets/niños-estudiando-fotologin.jpg";
@@ -10,7 +10,7 @@ import lightBgLogin from "../assets/login-background.svg";
 export const Login = () => {
   const { createUser } = useUserContext()
   const navigate = useNavigate();
-  const { postData } = usePost();
+  const { apiRequest } = useRequest();
   const [buttonClicked, setButtonClicked] = useState(false);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [loginError, setLoginError] = useState(false);
@@ -72,7 +72,7 @@ export const Login = () => {
       username: inputFilled.username,
       password: inputFilled.password,
     };
-    const { apiData } = await postData(userQuery, "/login");
+    const { apiData } = await apiRequest(userQuery, "login", "POST");
 
     // Si la respuesta de la api no fue exitosa,entonces hay un error en el login
     if (apiData.statusCode !== 200) {

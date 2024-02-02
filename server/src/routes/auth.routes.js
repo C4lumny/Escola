@@ -4,7 +4,7 @@ const authController = require('../controllers/auth.controllers');
 
 // Rutas de registro
 router.post('/registro/estudiante', authController.registroEstudiante);
-router.post('/registro/profesor', authController.registroProfesor);
+router.post('/teachers', authController.registroProfesor);
 router.post('/registro/acudiente', authController.registroAcudiente);
 router.post('/registro/administradores', authController.registroAdministrador);
 

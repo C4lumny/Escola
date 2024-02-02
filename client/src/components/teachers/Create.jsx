@@ -5,15 +5,15 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { usePost } from "@/hooks/usePost";
+import { useRequest } from "@/hooks/useRequest";
 
 export const CreateTeachers = () => {
-  const { postData } = usePost();
+  const { apiRequest } = useRequest();
 
   const onSubmit = async (data) => {
     console.log(data);
     // Aquí puedes manejar el envío del formulario, por ejemplo, enviando los datos a un servidor
-    const { apiData } = await postData(data, "/registro/profesor");
+    const { apiData } = await apiRequest(data, "teachers", "POST");
     console.log(apiData);
   };
 

@@ -1,27 +1,37 @@
 import { useState } from "react";
+import { useRequest } from "@/hooks/useRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Checkbox } from "../ui/checkbox";
+import { Button } from "../ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const ViewTeachers = () => {
+export const DeleteTeachers = () => {
   const { data, loading } = useGet("teachers");
   const [filter, setFilter] = useState("");
+  const [selectedTeachers, setSelectedTeachers] = useState([]);
+  const { apiRequest } = useRequest();
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
+  };
+
+  const handleCheckboxChange = (teacher) => {
+    const isChecked = selectedTeachers.some((selectedTeacher) => selectedTeacher.cedula === teacher.cedula);
+
+    setSelectedTeachers((prev) =>
+      isChecked ? prev.filter((selectedTeacher) => selectedTeacher.cedula !== teacher.cedula) : [...prev, teacher]
+    );
+  };
+
+  const handleDeleteClick = async () => {
+    const cedula_profesores = selectedTeachers;
+    console.log(cedula_profesores);
+    const { apiData } = await apiRequest(cedula_profesores, "teachers", "DELETE");
+    console.log(apiData);
   };
 
   let filteredData = [];
@@ -40,11 +50,11 @@ export const ViewTeachers = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="space-y-5">
           <div>
             <h1 className="text-xl font-semibold tracking-tight">Visualizar profesores</h1>
             <p className="text-muted-foreground">
-              Aqui puedes ver a los profesores activos en tu institución, sus cursos, etc.
+              Aquí puedes ver a los profesores activos en tu institución, sus cursos, etc.
             </p>
           </div>
           <Separator className="my-5" />
@@ -60,6 +70,7 @@ export const ViewTeachers = () => {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead></TableHead>
                   <TableHead>Cédula</TableHead>
                   <TableHead>Nombres</TableHead>
                   <TableHead>Apellidos</TableHead>
@@ -71,6 +82,13 @@ export const ViewTeachers = () => {
                 {filteredData.length > 0 ? (
                   filteredData.map((teacher) => (
                     <TableRow key={teacher.cedula}>
+                      <TableCell>
+                        <Checkbox
+                          className="w-4 h-4"
+                          type="checkbox"
+                          onCheckedChange={() => handleCheckboxChange(teacher)}
+                        />
+                      </TableCell>
                       <TableCell className="font-medium">{teacher.cedula}</TableCell>
                       <TableCell>{teacher.nombres}</TableCell>
                       <TableCell>{teacher.apellidos}</TableCell>
@@ -85,6 +103,11 @@ export const ViewTeachers = () => {
                 )}
               </TableBody>
             </Table>
+          </div>
+          <div className="flex w-full justify-end">
+            <Button onClick={handleDeleteClick} variant="destructive">
+              Borrar profesores
+            </Button>
           </div>
         </div>
       )}

@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 
-export const usePost = () => {
+export const useRequest = () => {
   const [apiData, setApiData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const postData = async (data, endpoint) => {
+  const apiRequest = async (data, endpoint, methodType) => {
     try {
-      const response = await fetch(`http://localhost:3000${endpoint}`, {
-        method: "POST",
+      // const response = await fetch(`https://sadieapi.onrender.com${endpoint}`, {
+      const response = await fetch(`http://localhost:3000/${endpoint}`, {
+        method: methodType,
         headers: {
           "Content-Type": "application/json",
         },
@@ -34,5 +35,5 @@ export const usePost = () => {
     // Aquí puedes realizar acciones adicionales cuando el estado cambia
   }, [loading, apiData, error]);
 
-  return { postData };
+  return { apiRequest };
 };

@@ -10,6 +10,14 @@ const registroEstudiante = (req, res) => {
   res.json({ mensaje: "Registro de estudiante exitoso" });
 };
 
+
+const registroAcudiente = (req, res) => {
+  // Lógica de registro para acudientes
+  // ...
+  
+  res.json({ mensaje: "Registro de acudiente exitoso" });
+};
+
 const registroProfesor = async (req, res) => {
   try {
     const { cedula, nombres, apellidos, correo, telefono, usuario, contraseña } = req.body;
@@ -21,13 +29,6 @@ const registroProfesor = async (req, res) => {
     console.error(err);
     res.status(500).json(response(null, 400, "incorrecto", "profesor no registrado debido a errores"));
   }
-};
-
-const registroAcudiente = (req, res) => {
-  // Lógica de registro para acudientes
-  // ...
-
-  res.json({ mensaje: "Registro de acudiente exitoso" });
 };
 
 const registroAdministrador = async (req, res) => {

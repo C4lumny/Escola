@@ -3,10 +3,12 @@ import { ViewTeachers } from "@/components/teachers/view";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
 import { CreateTeachers } from "@/components/teachers/Create";
+import { DeleteTeachers } from "@/components/teachers/Delete";
+import { UpdateTeachers } from "@/components/teachers/Update";
 
 export const Teachers = () => {
   const [active, setActive] = useState({
-    visualizar: false,
+    visualizar: true,
     crear: false,
     borrar: false,
     actualizar: false,
@@ -60,6 +62,8 @@ export const Teachers = () => {
             <div className="space-y-6">
               {active.visualizar && <ViewTeachers />}
               {active.crear && <CreateTeachers />}
+              {active.borrar && <DeleteTeachers />}
+              {active.actualizar && <UpdateTeachers />}
             </div>
           </div>
         </div>
