@@ -7,8 +7,8 @@ export const useRequest = () => {
 
   const apiRequest = async (data, endpoint, methodType) => {
     try {
-      const response = await fetch(`https://sadieapi.onrender.com/${endpoint}`, {
-      // const response = await fetch(`http://localhost:3000/${endpoint}`, {
+      // const response = await fetch(`https://sadieapi.onrender.com/${endpoint}`, {
+      const response = await fetch(`http://localhost:3000/${endpoint}`, {
         method: methodType,
         headers: {
           "Content-Type": "application/json",
