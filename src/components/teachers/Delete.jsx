@@ -105,6 +105,7 @@ export const DeleteTeachers = () => {
             </Table>
           </div>
           <div className="flex w-full justify-end">
+            {/* TODO: Generar mensaje de validación al eliminar un registro, de ser posible actualizar tabla */}
             <Button onClick={handleDeleteClick} variant="destructive">
               Borrar profesores
             </Button>

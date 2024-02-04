@@ -115,6 +115,7 @@ export const UpdateTeachers = () => {
                       <TableCell>{teacher.telefono}</TableCell>
                       <TableCell>{teacher.correo}</TableCell>
                       <TableCell>
+                        {/* TODO: Realizar validaciones en este formulario, guiarse de Create.jsx */}
                         <Sheet>
                           <SheetTrigger>
                             <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(teacher)} />
@@ -232,6 +233,7 @@ export const UpdateTeachers = () => {
                             </div>
                             <SheetFooter>
                               <SheetClose asChild>
+                                {/* TODO: Mostrar mensaje de actualización correcta, y actualizar la tabla para mostrar datos actualizados */}
                                 <Button type="submit" onClick={() => handleUpdateClick(teacher, updatedTeacher)}>
                                   Actualizar y finalizar
                                 </Button>
