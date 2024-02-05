@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Teachers } from "./administrators/teachers";
+import { Courses } from "./administrators/Courses";
 import { AsideOption } from "../components/AsideOption";
 // Recursos 👇
 import default_user from "../assets/default_user.webp";
@@ -165,6 +166,7 @@ export const Panel = () => {
           </div>
         )}
         {active.profesores && <Teachers />}
+        {active.cursos && <Courses />}
       </main>
     </div>
   );
