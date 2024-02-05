@@ -21,6 +21,10 @@ import {
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 
+/* TODO: realizar loader mientras los datos están cargando 
+En la linea 28, useGet trae data y loading. Puedes usar loading para validar la
+animación de carga */
+
 export const UpdateCourses = () => {
   const { data, loading } = useGet("courses");
   const [filter, setFilter] = useState("");
@@ -128,6 +132,7 @@ export const UpdateCourses = () => {
                             </div>
                             <SheetFooter>
                               <SheetClose asChild>
+                                {/* TODO: Generar validación al actualizar datos, de ser posible actualizar tabla x segundos después. */}
                                 <Button type="submit" onClick={() => handleUpdateClick(course, updatedCourse)}>
                                   Actualizar y finalizar
                                 </Button>

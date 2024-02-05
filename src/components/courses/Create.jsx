@@ -53,6 +53,7 @@ export const CreateCourses = () => {
               </FormItem>
             )}
           />
+          {/* TODO: Generar validación al crear registros, de ser posible actualizar tabla x segundos después. */}
           <Button type="submit">Submit</Button>
         </form>
       </Form>

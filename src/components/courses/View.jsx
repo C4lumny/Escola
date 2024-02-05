@@ -30,6 +30,8 @@ export const ViewCourses = () => {
     <div>
       {loading ? (
         <div className="flex items-center space-x-4">
+          {/* FIXME: (opcional) Juega con el skeleton (guiandote de la documentación) y genera
+          una animación de carga más insana */}
           <Skeleton className="h-12 w-12 rounded-full" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-[250px]" />

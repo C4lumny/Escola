@@ -9,6 +9,10 @@ import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+/* TODO: realizar loader mientras los datos están cargando 
+En la linea 17, useGet trae data y loading. Puedes usar loading para validar la
+animación de carga */
+
 export const DeleteCourses = () => {
   const { data, loading } = useGet("courses");
   const [filter, setFilter] = useState("");
@@ -97,6 +101,7 @@ export const DeleteCourses = () => {
             </Table>
           </div>
           <div className="flex w-full justify-end">
+            {/* TODO: Generar validación al eliminar datos, de ser posible actualizar tabla x segundos después. */}
             <Button onClick={handleDeleteClick} variant="destructive">
               Borrar cursos
             </Button>
