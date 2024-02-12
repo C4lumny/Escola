@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 
 export const ViewSubjects = () => {
-  const { data, loading } = useGet("courses");
+  const { data, loading } = useGet("subjects");
   const [filter, setFilter] = useState("");
 
   const handleFilterChange = (event) => {
@@ -23,7 +23,7 @@ export const ViewSubjects = () => {
 
   let filteredData = [];
   if (data && data.data) {
-    filteredData = data.data.filter((course) => course.id.includes(filter));
+    filteredData = data.data.filter((subject) => subject.nombre.includes(filter));
   }
 
   return (
@@ -39,32 +39,42 @@ export const ViewSubjects = () => {
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar cursos</h1>
+            <h1 className="text-xl font-semibold tracking-tight">Visualizar asignaturas</h1>
             <p className="text-muted-foreground">
-              Aqui puedes ver a los cursos activos en tu institución.
+              Aqui puedes ver las asignaturas en tu institución.
             </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar por id..."
+              placeholder="Filtrar por nombre..."
               className="max-w-sm"
               value={filter}
               onChange={handleFilterChange}
             />
           </div>
-          <div className="rounded-md border w-96">
+          <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID</TableHead>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Cedula profesor</TableHead>
+                  <TableHead>Apellidos profesor</TableHead>
+                  <TableHead>Nombres profesor</TableHead>
+                  <TableHead>Cursos dictados</TableHead>
+                  <TableHead>Descripcion</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
-                  filteredData.map((teacher) => (
-                    <TableRow key={teacher.id}>
-                      <TableCell className="font-medium w-10">{teacher.id}</TableCell>
+                  filteredData.map((subject) => (
+                    <TableRow key={subject.id}>
+                      <TableCell className="font-medium w-10">{subject.nombre}</TableCell>
+                      <TableCell className="font-medium w-10">{subject.cedula_profesor}</TableCell>
+                      <TableCell className="font-medium w-10">{subject.apellidos_profesor}</TableCell>
+                      <TableCell className="font-medium w-10">{subject.nombres_profesor}</TableCell>
+                      <TableCell className="font-medium w-10">{subject.id_curso}</TableCell>
+                      <TableCell className="font-medium w-10">{subject.descripcion}</TableCell>
                     </TableRow>
                   ))
                 ) : (

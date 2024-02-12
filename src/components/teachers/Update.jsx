@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useRequest } from "@/hooks/useRequest";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
@@ -7,7 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -18,6 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 
@@ -25,47 +28,44 @@ export const UpdateTeachers = () => {
   const { data, loading } = useGet("teachers");
   const [filter, setFilter] = useState("");
   const { apiRequest } = useRequest();
-  const [selectedTeacher, setSelectedTeacher] = useState({});
-  const [updatedTeacher, setUpdatedTeacher] = useState({});
   let filteredData = [];
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const handleRefreshClick = (teacher) => {
-    setSelectedTeacher(teacher);
-  };
-
-  const handleUpdateClick = (teacher, updatedTeacher) => {
-    const data = { teacher, updatedTeacher };
-    apiRequest(data, "teachers", "PUT")
-  };
-
-  const handleInputChange = (event) => {
-    setUpdatedTeacher({
-      ...updatedTeacher,
-      [event.target.id]: event.target.value,
-    });
+  const handleUpdateClick = (updatedTeacher, teacher) => {
+    const data = {updatedTeacher, teacher};
+    console.log(data);
+    apiRequest(data, "teachers", "PUT");
   };
 
   if (data && data.data) {
     filteredData = data.data.filter((teacher) => teacher.cedula.includes(filter));
   }
 
-  useEffect(() => {
-    // Establece valores predeterminados al cargar un nuevo profesor
-    if (selectedTeacher && selectedTeacher.cedula) {
-      setUpdatedTeacher({
-        cedula: selectedTeacher.cedula,
-        nombres: selectedTeacher.nombres || '',
-        apellidos: selectedTeacher.apellidos || '',
-        telefono: selectedTeacher.telefono || '',
-        correo: selectedTeacher.correo || '',
-        usuario: selectedTeacher.usuario || '',
-      });
-    }
-  }, [selectedTeacher]);
+  // TODO: Agregar mensajes de validación y validaciones en lo que veas opcional
+  const schema = yup.object({
+    cedula: yup.string().required("Ingrese un numero de cedula").min(1).max(10),
+    nombres: yup.string().required(),
+    apellidos: yup.string().required(),
+    correo: yup.string().required().email(),
+    telefono: yup.string().required(),
+    usuario: yup.string().required(),
+    contraseña_actual: yup.string().required(),
+    contraseña_nueva: yup.string().required(),
+  });
+
+  const form = useForm({ resolver: yupResolver(schema) });
+
+  const handleRefreshClick = (teacher) => {
+    form.setValue("cedula", teacher.cedula);
+    form.setValue("nombres", teacher.nombres);
+    form.setValue("apellidos", teacher.apellidos);
+    form.setValue("correo", teacher.correo);
+    form.setValue("telefono", teacher.telefono);
+    form.setValue("usuario", teacher.usuario);
+  };
 
   return (
     <div>
@@ -126,117 +126,149 @@ export const UpdateTeachers = () => {
                                 Realiza cambios a tus profesores, clickea "Actualizar y finalizar" cuando termines.
                               </SheetDescription>
                             </SheetHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="cedula" className="text-right">
-                                  Cédula
-                                </Label>
-                                <Input
-                                  id="cedula"
-                                  value={updatedTeacher.cedula}
-                                  onChange={handleInputChange}
-                                  className="col-span-3"
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="nombres" className="text-right">
-                                  Nombres
-                                </Label>
-                                <Input
-                                  id="nombres"
-                                  value={updatedTeacher.nombres}
-                                  onChange={handleInputChange}
-                                  className="col-span-3"
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="apellidos" className="text-right">
-                                  Apellidos
-                                </Label>
-                                <Input
-                                  id="apellidos"
-                                  value={updatedTeacher.apellidos}
-                                  onChange={handleInputChange}
-                                  className="col-span-3"
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="telefono" className="text-right">
-                                  Teléfono
-                                </Label>
-                                <Input
-                                  id="telefono"
-                                  value={updatedTeacher.telefono}
-                                  onChange={handleInputChange}
-                                  className="col-span-3"
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="correo" className="text-right">
-                                  Correo
-                                </Label>
-                                <Input
-                                  id="correo"
-                                  value={updatedTeacher.correo}
-                                  onChange={handleInputChange}
-                                  className="col-span-3"
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="usuario" className="text-right">
-                                  Usuario
-                                </Label>
-                                <Input
-                                  id="usuario"
-                                  value={updatedTeacher.usuario}
-                                  onChange={handleInputChange}
-                                  className="col-span-3"
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="contraseña_actual" className="text-right">
-                                  Contraseña actual
-                                </Label>
-                                <Input
-                                  id="contraseña_actual"
-                                  type="password"
-                                  placeholder="************"
-                                  className="col-span-3"
-                                  onChange={handleInputChange}
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="contraseña_nueva" className="text-right">
-                                  Contraseña nueva
-                                </Label>
-                                <Input
-                                  id="contraseña_nueva"
-                                  type="password"
-                                  placeholder="************"
-                                  className="col-span-3"
-                                  onChange={handleInputChange}
-                                />
-                              </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="contraseña_nuevaR" className="text-right">
-                                  Repetir contraseña nueva
-                                </Label>
-                                <Input
-                                  id="contraseña_nuevaR"
-                                  type="password"
-                                  placeholder="************"
-                                  className="col-span-3"
-                                  onChange={handleInputChange}
-                                />
-                              </div>
+                            <div className="grid gap-5 py-4">
+                              <Form {...form}>
+                                <form
+                                  className="space-y-4"
+                                  onSubmit={form.handleSubmit((updatedTeacher) =>
+                                    handleUpdateClick(updatedTeacher, teacher)
+                                  )}
+                                >
+                                  {/* FIXME: Hay errores en el css con respecto a los mensajes de validación yup. (opcional) */}
+                                  {/* 👇 Espacio para el input de cedula */}
+                                  <FormField
+                                    control={form.control}
+                                    name="cedula"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Cédula</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="Cedula" {...field} className="col-span-3" />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input de nombres  */}
+                                  <FormField
+                                    control={form.control}
+                                    name="nombres"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Nombres</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="Jose" {...field} className="col-span-3" />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input de apellidos  */}
+                                  <FormField
+                                    control={form.control}
+                                    name="apellidos"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Apellidos</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="Hernández Restrepo" {...field} className="col-span-3" />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input del correo */}
+                                  <FormField
+                                    control={form.control}
+                                    name="correo"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Email</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="example@example.com" {...field} className="col-span-3" />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input del celular */}
+                                  <FormField
+                                    control={form.control}
+                                    name="telefono"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Teléfono</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="3000000000" {...field} className="col-span-3" />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input del usuario */}
+                                  <FormField
+                                    control={form.control}
+                                    name="usuario"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Usuario</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="jesus_profesor" {...field} className="col-span-3" />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input de la contraseña actual */}
+                                  <FormField
+                                    control={form.control}
+                                    name="contraseña_actual"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Contraseña actual</FormLabel>
+                                        <FormControl>
+                                          <Input
+                                            placeholder="**************"
+                                            type="password"
+                                            {...field}
+                                            className="col-span-3"
+                                          />
+                                        </FormControl>
+
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  {/* 👇 Espacio para el input de la contraseña nueva */}
+                                  <FormField
+                                    control={form.control}
+                                    name="contraseña_nueva"
+                                    render={({ field }) => (
+                                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                                        <FormLabel className="text-right">Contraseña nueva</FormLabel>
+                                        <FormControl>
+                                          <Input
+                                            placeholder="**************"
+                                            type="password"
+                                            {...field}
+                                            className="col-span-3"
+                                          />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  <SheetFooter>
+                                    <SheetClose asChild>
+                                      <Button type="submit">Actualizar y finalizar</Button>
+                                    </SheetClose>
+                                  </SheetFooter>
+                                </form>
+                              </Form>
                             </div>
-                            <SheetFooter>
-                              <SheetClose asChild>
-                                <Button type="submit" onClick={() => handleUpdateClick(teacher, updatedTeacher)}>
-                                  Actualizar y finalizar
-                                </Button>
-                              </SheetClose>
-                            </SheetFooter>
                           </SheetContent>
                         </Sheet>
                       </TableCell>

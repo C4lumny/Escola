@@ -10,9 +10,9 @@ import { Button } from "../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export const DeleteSubjects = () => {
-  const { data, loading } = useGet("courses");
+  const { data, loading } = useGet("subjects");
   const [filter, setFilter] = useState("");
-  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const { apiRequest } = useRequest();
 
   const handleFilterChange = (event) => {
@@ -20,23 +20,23 @@ export const DeleteSubjects = () => {
   };
 
   const handleCheckboxChange = (course) => {
-    const isChecked = selectedCourses.some((selectedCourse) => selectedCourse.id === course.id);
+    const isChecked = selectedSubjects.some((selectedCourse) => selectedCourse.id === course.id);
 
-    setSelectedCourses((prev) =>
+    setSelectedSubjects((prev) =>
       isChecked ? prev.filter((selectedCourse) => selectedCourse.id !== course.id) : [...prev, course]
     );
   };
 
   const handleDeleteClick = async () => {
-    const id_courses = selectedCourses;
-    console.log(id_courses);
-    const { apiData } = await apiRequest(id_courses, "courses", "DELETE");
+    const id_subjects = selectedSubjects;
+    console.log(id_subjects);
+    const { apiData } = await apiRequest(id_subjects, "subjects", "DELETE");
     console.log(apiData);
   };
 
   let filteredData = [];
   if (data && data.data) {
-    filteredData = data.data.filter((course) => course.id.includes(filter));
+    filteredData = data.data.filter((subject) => subject.nombre.includes(filter));
   }
 
   return (
@@ -52,7 +52,7 @@ export const DeleteSubjects = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar profesores</h1>
+            <h1 className="text-xl font-semibold tracking-tight">Eliminar asignaturas</h1>
             <p className="text-muted-foreground">
               Aquí puedes ver a los profesores activos en tu institución, sus cursos, etc.
             </p>
@@ -60,32 +60,42 @@ export const DeleteSubjects = () => {
           <Separator className="my-5" />
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar por cédula..."
+              placeholder="Filtrar por nombre..."
               className="max-w-sm"
               value={filter}
               onChange={handleFilterChange}
             />
           </div>
-          <div className="rounded-md border w-96">
+          <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead></TableHead>
-                  <TableHead>ID</TableHead>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Cedula profesor</TableHead>
+                  <TableHead>Apellidos profesor</TableHead>
+                  <TableHead>Nombres profesor</TableHead>
+                  <TableHead>Cursos dictados</TableHead>
+                  <TableHead>Descripcion</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
-                  filteredData.map((course) => (
-                    <TableRow key={course.id}>
-                      <TableCell className="w-10">
+                  filteredData.map((subject) => (
+                    <TableRow key={subject.id}>
+                      <TableCell>
                         <Checkbox
                           className="w-4 h-4"
                           type="checkbox"
-                          onCheckedChange={() => handleCheckboxChange(course)}
+                          onCheckedChange={() => handleCheckboxChange(subject)}
                         />
                       </TableCell>
-                      <TableCell className="font-medium">{course.id}</TableCell>
+                      <TableCell className="font-medium">{subject.nombre}</TableCell>
+                      <TableCell className="font-medium">{subject.cedula_profesor}</TableCell>
+                      <TableCell className="font-medium">{subject.apellidos_profesor}</TableCell>
+                      <TableCell className="font-medium">{subject.nombres_profesor}</TableCell>
+                      <TableCell className="font-medium">{subject.id_curso}</TableCell>
+                      <TableCell className="font-medium">{subject.descripcion}</TableCell>
                     </TableRow>
                   ))
                 ) : (
@@ -98,7 +108,7 @@ export const DeleteSubjects = () => {
           </div>
           <div className="flex w-full justify-end">
             <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar cursos
+              Borrar asignaturas
             </Button>
           </div>
         </div>
