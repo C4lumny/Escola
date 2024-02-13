@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Teachers } from "./administrators/teachers";
 import { Courses } from "./administrators/Courses";
 import { Subjects } from "./administrators/Subjects"
+import { Parents } from "./administrators/Parents";
 import { AsideOption } from "../components/AsideOption";
 // Recursos 👇
 import default_user from "../assets/default_user.webp";
@@ -169,6 +170,7 @@ export const Panel = () => {
         {active.profesores && <Teachers />}
         {active.cursos && <Courses />}
         {active.asignaturas && <Subjects />}
+        {active.acudientes && <Parents />}
       </main>
     </div>
   );
