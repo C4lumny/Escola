@@ -5,14 +5,14 @@ import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
+import { Checkbox } from "../../ui/checkbox";
+import { Button } from "../../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const DeleteSubjects = () => {
-  const { data, loading } = useGet("subjects");
+export const DeleteCourses = () => {
+  const { data, loading } = useGet("courses");
   const [filter, setFilter] = useState("");
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [selectedCourses, setSelectedCourses] = useState([]);
   const { apiRequest } = useRequest();
 
   const handleFilterChange = (event) => {
@@ -20,23 +20,23 @@ export const DeleteSubjects = () => {
   };
 
   const handleCheckboxChange = (course) => {
-    const isChecked = selectedSubjects.some((selectedCourse) => selectedCourse.id === course.id);
+    const isChecked = selectedCourses.some((selectedCourse) => selectedCourse.id === course.id);
 
-    setSelectedSubjects((prev) =>
+    setSelectedCourses((prev) =>
       isChecked ? prev.filter((selectedCourse) => selectedCourse.id !== course.id) : [...prev, course]
     );
   };
 
   const handleDeleteClick = async () => {
-    const id_subjects = selectedSubjects;
-    console.log(id_subjects);
-    const { apiData } = await apiRequest(id_subjects, "subjects", "DELETE");
+    const id_courses = selectedCourses;
+    console.log(id_courses);
+    const { apiData } = await apiRequest(id_courses, "courses", "DELETE");
     console.log(apiData);
   };
 
   let filteredData = [];
   if (data && data.data) {
-    filteredData = data.data.filter((subject) => subject.nombre.includes(filter));
+    filteredData = data.data.filter((course) => course.id.includes(filter));
   }
 
   return (
@@ -52,7 +52,7 @@ export const DeleteSubjects = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar asignaturas</h1>
+            <h1 className="text-xl font-semibold tracking-tight">Visualizar profesores</h1>
             <p className="text-muted-foreground">
               Aquí puedes ver a los profesores activos en tu institución, sus cursos, etc.
             </p>
@@ -60,42 +60,32 @@ export const DeleteSubjects = () => {
           <Separator className="my-5" />
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar por nombre..."
+              placeholder="Filtrar por cédula..."
               className="max-w-sm"
               value={filter}
               onChange={handleFilterChange}
             />
           </div>
-          <div className="rounded-md border">
+          <div className="rounded-md border w-96">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead></TableHead>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead>Cedula profesor</TableHead>
-                  <TableHead>Apellidos profesor</TableHead>
-                  <TableHead>Nombres profesor</TableHead>
-                  <TableHead>Cursos dictados</TableHead>
-                  <TableHead>Descripcion</TableHead>
+                  <TableHead>ID</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
-                  filteredData.map((subject) => (
-                    <TableRow key={subject.id}>
-                      <TableCell>
+                  filteredData.map((course) => (
+                    <TableRow key={course.id}>
+                      <TableCell className="w-10">
                         <Checkbox
                           className="w-4 h-4"
                           type="checkbox"
-                          onCheckedChange={() => handleCheckboxChange(subject)}
+                          onCheckedChange={() => handleCheckboxChange(course)}
                         />
                       </TableCell>
-                      <TableCell className="font-medium">{subject.nombre}</TableCell>
-                      <TableCell className="font-medium">{subject.cedula_profesor}</TableCell>
-                      <TableCell className="font-medium">{subject.apellidos_profesor}</TableCell>
-                      <TableCell className="font-medium">{subject.nombres_profesor}</TableCell>
-                      <TableCell className="font-medium">{subject.id_curso}</TableCell>
-                      <TableCell className="font-medium">{subject.descripcion}</TableCell>
+                      <TableCell className="font-medium">{course.id}</TableCell>
                     </TableRow>
                   ))
                 ) : (
@@ -108,7 +98,7 @@ export const DeleteSubjects = () => {
           </div>
           <div className="flex w-full justify-end">
             <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar asignaturas
+              Borrar cursos
             </Button>
           </div>
         </div>

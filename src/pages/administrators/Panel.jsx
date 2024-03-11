@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Teachers } from "./administrators/teachers";
-import { Courses } from "./administrators/Courses";
-import { Subjects } from "./administrators/Subjects"
-import { Parents } from "./administrators/Parents";
-import { Students } from "./administrators/Students";
+import { Teachers } from "./teachers";
+import { Courses } from "./Courses";
+import { Subjects } from "./Subjects"
+import { Parents } from "./Parents";
+import { Students } from "./Students";
 // UI imports 👇
-import { AsideOption } from "../components/AsideOption";
+import { AsideOption } from "../../components/AsideOption";
 // Recursos 👇
-import default_user from "../assets/default_user.webp";
+import default_user from "../../assets/default_user.webp";
 
 export const Panel = () => {
   const [active, setActive] = useState({

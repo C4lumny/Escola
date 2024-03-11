@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   Sheet,
@@ -24,8 +24,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 
-export const UpdateStudents = () => {
-  const { data, loading } = useGet("parents");
+export const UpdateTeachers = () => {
+  const { data, loading } = useGet("teachers");
   const [filter, setFilter] = useState("");
   const { apiRequest } = useRequest();
   let filteredData = [];
@@ -34,14 +34,14 @@ export const UpdateStudents = () => {
     setFilter(event.target.value);
   };
 
-  const handleUpdateClick = (updatedParent, parent) => {
-    const data = { updatedParent, parent };
+  const handleUpdateClick = (updatedTeacher, teacher) => {
+    const data = {updatedTeacher, teacher};
     console.log(data);
-    apiRequest(data, "parents", "PUT");
+    apiRequest(data, "teachers", "PUT");
   };
 
   if (data && data.data) {
-    filteredData = data.data.filter((parent) => parent.cedula.includes(filter));
+    filteredData = data.data.filter((teacher) => teacher.cedula.includes(filter));
   }
 
   // TODO: Agregar mensajes de validación y validaciones en lo que veas opcional
@@ -58,13 +58,13 @@ export const UpdateStudents = () => {
 
   const form = useForm({ resolver: yupResolver(schema) });
 
-  const handleRefreshClick = (parent) => {
-    form.setValue("cedula", parent.cedula);
-    form.setValue("nombres", parent.nombres);
-    form.setValue("apellidos", parent.apellidos);
-    form.setValue("correo", parent.correo);
-    form.setValue("telefono", parent.telefono);
-    form.setValue("usuario", parent.usuario);
+  const handleRefreshClick = (teacher) => {
+    form.setValue("cedula", teacher.cedula);
+    form.setValue("nombres", teacher.nombres);
+    form.setValue("apellidos", teacher.apellidos);
+    form.setValue("correo", teacher.correo);
+    form.setValue("telefono", teacher.telefono);
+    form.setValue("usuario", teacher.usuario);
   };
 
   return (
@@ -80,7 +80,7 @@ export const UpdateStudents = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Actualizar acudientes</h1>
+            <h1 className="text-xl font-semibold tracking-tight">Visualizar profesores</h1>
             <p className="text-muted-foreground">
               Aquí puedes ver a los profesores activos en tu institución, sus cursos, etc.
             </p>
@@ -107,31 +107,31 @@ export const UpdateStudents = () => {
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
-                  filteredData.map((parent) => (
-                    <TableRow key={parent.cedula}>
-                      <TableCell className="font-medium">{parent.cedula}</TableCell>
-                      <TableCell>{parent.nombres}</TableCell>
-                      <TableCell>{parent.apellidos}</TableCell>
-                      <TableCell>{parent.telefono}</TableCell>
-                      <TableCell>{parent.correo}</TableCell>
+                  filteredData.map((teacher) => (
+                    <TableRow key={teacher.cedula}>
+                      <TableCell className="font-medium">{teacher.cedula}</TableCell>
+                      <TableCell>{teacher.nombres}</TableCell>
+                      <TableCell>{teacher.apellidos}</TableCell>
+                      <TableCell>{teacher.telefono}</TableCell>
+                      <TableCell>{teacher.correo}</TableCell>
                       <TableCell>
                         <Sheet>
                           <SheetTrigger>
-                            <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(parent)} />
+                            <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(teacher)} />
                           </SheetTrigger>
                           <SheetContent>
                             <SheetHeader>
-                              <SheetTitle>Actualizar acudiente</SheetTitle>
+                              <SheetTitle>Actualizar profesor</SheetTitle>
                               <SheetDescription>
-                                Realiza cambios a tus acudientes, clickea "Actualizar y finalizar" cuando termines.
+                                Realiza cambios a tus profesores, clickea "Actualizar y finalizar" cuando termines.
                               </SheetDescription>
                             </SheetHeader>
                             <div className="grid gap-5 py-4">
                               <Form {...form}>
                                 <form
                                   className="space-y-4"
-                                  onSubmit={form.handleSubmit((updatedParent) =>
-                                    handleUpdateClick(updatedParent, parent)
+                                  onSubmit={form.handleSubmit((updatedTeacher) =>
+                                    handleUpdateClick(updatedTeacher, teacher)
                                   )}
                                 >
                                   {/* FIXME: Hay errores en el css con respecto a los mensajes de validación yup. (opcional) */}

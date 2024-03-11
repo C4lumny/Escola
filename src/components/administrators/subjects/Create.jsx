@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useRequest } from "@/hooks/useRequest";
 import { useGet } from "@/hooks/useGet";
 // 👇 UI imports
-import { Separator } from "../ui/separator";
+import { Separator } from "../../ui/separator";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";

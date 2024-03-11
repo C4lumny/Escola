@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ViewTeachers } from "@/components/teachers/view";
+import { ViewTeachers } from "@/components/administrators/teachers/view";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
-import { CreateTeachers } from "@/components/teachers/Create";
-import { DeleteTeachers } from "@/components/teachers/Delete";
-import { UpdateTeachers } from "@/components/teachers/Update";
+import { CreateTeachers } from "@/components/administrators/teachers/Create";
+import { DeleteTeachers } from "@/components/administrators/teachers/Delete";
+import { UpdateTeachers } from "@/components/administrators/teachers/Update";
 
 export const Teachers = () => {
   const [active, setActive] = useState({

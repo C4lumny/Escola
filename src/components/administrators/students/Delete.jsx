@@ -5,38 +5,38 @@ import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
+import { Checkbox } from "../../ui/checkbox";
+import { Button } from "../../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const DeleteParents = () => {
-  const { data, loading } = useGet("parents");
+export const DeleteStudents = () => {
+  const { data, loading } = useGet("students");
   const [filter, setFilter] = useState("");
-  const [selectedParents, setSelectedParents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const { apiRequest } = useRequest();
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const handleCheckboxChange = (parent) => {
-    const isChecked = selectedParents.some((selectedParent) => selectedParent.cedula === parent.cedula);
+  const handleCheckboxChange = (student) => {
+    const isChecked = selectedStudents.some((selectedStudent) => selectedStudent.identificacion === student.identificacion);
 
-    setSelectedParents((prev) =>
-      isChecked ? prev.filter((selectedParent) => selectedParent.cedula !== parent.cedula) : [...prev, parent]
+    setSelectedStudents((prev) =>
+      isChecked ? prev.filter((selectedStudent) => selectedStudent.identificacion !== student.identificacion) : [...prev, student]
     );
   };
 
   const handleDeleteClick = async () => {
-    const cedula_acudientes = selectedParents;
-    console.log(cedula_acudientes);
-    const { apiData } = await apiRequest(cedula_acudientes, "parents", "DELETE");
+    const identificacion_estudiantes = selectedStudents;
+    console.log(identificacion_estudiantes);
+    const { apiData } = await apiRequest(identificacion_estudiantes, "students", "DELETE");
     console.log(apiData);
   };
 
   let filteredData = [];
-  if (data && data.data) {
-    filteredData = data.data.filter((parent) => parent.cedula.includes(filter));
+  if (data) {
+    filteredData = data.filter((student) => student.identificacion.includes(filter));
   }
 
   return (
@@ -52,15 +52,15 @@ export const DeleteParents = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar acudientes</h1>
+            <h1 className="text-xl font-semibold tracking-tight">Eliminar estudiantes</h1>
             <p className="text-muted-foreground">
-              Aquí puedes ver a los profesores activos en tu institución, sus cursos, etc.
+              Aquí puedes ver a los estudiantes activos en tu institución, sus cursos, etc.
             </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar por cédula..."
+              placeholder="Filtrar por numero de identificacion..."
               className="max-w-sm"
               value={filter}
               onChange={handleFilterChange}
@@ -71,29 +71,35 @@ export const DeleteParents = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead></TableHead>
-                  <TableHead>Cédula</TableHead>
+                  <TableHead>Tipo de documento</TableHead>
+                  <TableHead>Nro. Identificacion</TableHead>
                   <TableHead>Nombres</TableHead>
                   <TableHead>Apellidos</TableHead>
-                  <TableHead>Teléfono</TableHead>
-                  <TableHead>Correo</TableHead>
+                  <TableHead>Cedula acudiente</TableHead>
+                  <TableHead>Nombres acudiente</TableHead>
+                  <TableHead>Apellidos acudiente</TableHead>
+                  <TableHead>Curso asignado</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length > 0 ? (
-                  filteredData.map((parent) => (
-                    <TableRow key={parent.cedula}>
+                  filteredData.map((student) => (
+                    <TableRow key={student.identificacion}>
                       <TableCell>
                         <Checkbox
                           className="w-4 h-4"
                           type="checkbox"
-                          onCheckedChange={() => handleCheckboxChange(parent)}
+                          onCheckedChange={() => handleCheckboxChange(student)}
                         />
                       </TableCell>
-                      <TableCell className="font-medium">{parent.cedula}</TableCell>
-                      <TableCell>{parent.nombres}</TableCell>
-                      <TableCell>{parent.apellidos}</TableCell>
-                      <TableCell>{parent.telefono}</TableCell>
-                      <TableCell>{parent.correo}</TableCell>
+                      <TableCell>{student.tipo_documento}</TableCell>
+                      <TableCell className="font-medium">{student.identificacion}</TableCell>
+                      <TableCell>{student.nombres}</TableCell>
+                      <TableCell>{student.apellidos}</TableCell>
+                      <TableCell>{student.cedula_acudiente}</TableCell>
+                      <TableCell>{student.nombres_acudiente}</TableCell>
+                      <TableCell>{student.apellidos_acudiente}</TableCell>
+                      <TableCell>{student.id_cursos}</TableCell>
                     </TableRow>
                   ))
                 ) : (

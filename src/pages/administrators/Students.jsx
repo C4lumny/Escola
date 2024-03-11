@@ -1,10 +1,10 @@
 import { useState } from "react";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
-import { ViewStudents } from "@/components/students/view";
-import { CreateStudents } from "@/components/students/Create";
-import { DeleteStudents } from "@/components/students/Delete";
-import { UpdateStudents } from "@/components/students/Update";
+import { ViewStudents } from "@/components/administrators/students/view";
+import { CreateStudents } from "@/components/administrators/students/Create";
+import { DeleteStudents } from "@/components/administrators/students/Delete";
+import { UpdateStudents } from "@/components/administrators/students/Update";
 
 export const Students = () => {
   const [active, setActive] = useState({

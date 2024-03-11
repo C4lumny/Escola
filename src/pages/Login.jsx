@@ -79,29 +79,20 @@ export const Login = () => {
       setLoginError(true);
     } else {
       // Guardar los datos del usuario en localStorage
-      localStorage.setItem('user', JSON.stringify(apiData.data));
       createUser(apiData.data);
+      console.log(apiData.data);
 
       // Dependiendo del tipo de usuario, te lleva a una ruta u otra
       switch (apiData.data.tipo_usuario) {
         case "Administrador":
-          navigate("/panel/administrador");
+          navigate("/panel/administradores");
+          break;
+        case "Estudiante":
+          navigate('/panel/estudiantes');
+          break;
       }
     }
   };
-
-  // Al cargar la aplicación
-  useEffect(() => {
-    // Verificar si los datos del usuario existen en localStorage
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    if (user) {
-      // Si los datos del usuario existen, mantener la sesión del usuario
-      createUser(user);
-    }else{
-      return;
-    }
-  }, []);
 
   // 👇 Dependiendo de si los inputs de username y password tengan valores, pondrá como true que todos los inputs tienen valores
   useEffect(() => {

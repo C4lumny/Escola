@@ -1,10 +1,10 @@
 import { useState } from "react";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
-import { ViewParents } from "@/components/parents/view";
-import { CreateParents } from "@/components/parents/Create";
-import { DeleteParents } from "@/components/parents/Delete";
-import { UpdateParents } from "@/components/parents/Update";
+import { ViewParents } from "@/components/administrators/parents/view";
+import { CreateParents } from "@/components/administrators/parents/Create";
+import { DeleteParents } from "@/components/administrators/parents/Delete";
+import { UpdateParents } from "@/components/administrators/parents/Update";
 
 export const Parents = () => {
   const [active, setActive] = useState({
