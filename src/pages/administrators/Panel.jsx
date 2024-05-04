@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Teachers } from "./teachers";
+import { Teachers } from "./Teachers";
 import { Courses } from "./Courses";
 import { Subjects } from "./Subjects"
 import { Parents } from "./Parents";
