@@ -47,9 +47,7 @@ export const Student = () => {
                     <SubjectCard
                       subject={subject}
                       key={subject.id}
-                      image={
-                        "https://www.shutterstock.com/image-vector/spanish-open-book-language-hand-260nw-1260510196.jpg"
-                      }
+                      
                     />
                   ))
                 ) : (

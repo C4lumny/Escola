@@ -30,7 +30,7 @@ const App = () => {
         }
       />
       <Route
-        path="/Panel/:role"
+        path="/Panel/:role/*"
         element={
           <UserProvider>
             <ProtectedRoute>
