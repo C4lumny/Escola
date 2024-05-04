@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ViewTeachers } from "@/components/administrators/teachers/view";
+import { ViewTeachers } from "@/components/administrators/teachers/View";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
 import { CreateTeachers } from "@/components/administrators/teachers/Create";

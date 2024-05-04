@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
-import { ViewSubjects } from "@/components/administrators/subjects/view";
+import { ViewSubjects } from "@/components/administrators/subjects/View";
 import { CreateSubjects } from "@/components/administrators/subjects/Create";
 import { DeleteSubjects } from "@/components/administrators/subjects/Delete";
 import { UpdateSubjects } from "@/components/administrators/subjects/Update";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
-import { ViewParents } from "@/components/administrators/parents/view";
+import { ViewParents } from "@/components/administrators/parents/View";
 import { CreateParents } from "@/components/administrators/parents/Create";
 import { DeleteParents } from "@/components/administrators/parents/Delete";
 import { UpdateParents } from "@/components/administrators/parents/Update";

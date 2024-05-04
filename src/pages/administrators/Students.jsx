@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SidebarNav from "@/components/SidebarNav";
 import { Separator } from "@/components/ui/separator";
-import { ViewStudents } from "@/components/administrators/students/view";
+import { ViewStudents } from "@/components/administrators/students/View";
 import { CreateStudents } from "@/components/administrators/students/Create";
 import { DeleteStudents } from "@/components/administrators/students/Delete";
 import { UpdateStudents } from "@/components/administrators/students/Update";
