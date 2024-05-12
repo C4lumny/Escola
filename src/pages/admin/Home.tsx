@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Nav } from "@/components/nav";
 import { ModeToggle } from "@/components/mode-toggle";
 import { StudentsPage } from "./students/page";
-
+import { SubjectsPage } from "./subjects/page";
 
 export const Home = () => {
   const location = useLocation();
@@ -38,7 +38,7 @@ export const Home = () => {
       <div className="h-screen w-64 fixed left-0 col-span-1 flex flex-col">
         {/* 👇 Logo del aplicativo */}
         <div className="mt-10 flex flex-col items-center">
-          <img src={EscolaIcon} alt="" className="w-26 h-16"/>
+          <img src={EscolaIcon} alt="" className="w-26 h-16" />
           <div className="flex justify-center items-center">
             <span className="text-lg font-bold tracking-tight">Bienvenido, {user.username}</span>
           </div>
@@ -103,8 +103,8 @@ export const Home = () => {
         <Routes>
           <Route path="dashboard/*" element={<DashboardPage />} />
           <Route path="students/*" element={<StudentsPage />} />
-          {/* <Route path="teachers/*" element={<AirportsPage />} />
-          <Route path="courses/*" element={<PlanesPage />} />
+          <Route path="subjects/*" element={<SubjectsPage />} />
+          {/*<Route path="courses/*" element={<PlanesPage />} />
           <Route path="subjects/*" element={<TicketsPage />} />
           <Route path="activities/*" element={<CostumersPage />} /> */}
         </Routes>

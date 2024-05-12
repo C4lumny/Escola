@@ -9,47 +9,58 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
 
-export const DeleteCountry = () => {
-  const { data, loading, mutate } = useGet("/FlyEaseApi/Paises/GetAll");
+export const DeleteSubject = () => {
+  const { data, loading, mutate } = useGet("subjects");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState<number>();
+  const [selectedSubject, setSelectedSubject] = useState<any>();
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.response.map(
-      (item: any) =>
+    dataTable = data.data.map(
+      (subject: any) =>
         ({
-          idpais: item.idpais,
-          nombre: item.nombre,
-          fechaRegistro: new Date(item.fecharegistro).toLocaleString(),
           deleteCheckbox: (
             <Checkbox
-              checked={item.idpais === selectedCountry}
+              checked={subject === selectedSubject}
               className="w-4 h-4"
-              onCheckedChange={() => handleCheckboxChange(item.idpais)}
+              onCheckedChange={() => handleCheckboxChange(subject)}
             />
           ),
+          nombre: subject.nombre,
+          cedula_profesor: subject.cedula_profesor, 
+          apellidos_profesor: subject.apellidos_profesor,
+          nombres_profesor: subject.nombres_profesor,
+          cursos_dictados: subject.id_curso,
+          descripcion: subject.descripcion
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.idpais.toString().includes(filter));
+    filteredData = dataTable.filter((subject: any) => subject.nombre.includes(filter));
   }
 
-  const columnTitles = ["Id del pais", "Nombre del pais", "Fecha de registro"];
+  const columnTitles = [
+    "Nombre",
+    "Cedula profesor",
+    "Apellidos profesor",
+    "Nombres profesor",
+    "Cursos dictados",
+    "Descripcion",
+  ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
   };
 
-  const handleCheckboxChange = (idpais: number) => {
-    setSelectedCountry(idpais);
+  const handleCheckboxChange = (estudiante: any) => {
+    setSelectedSubject(estudiante);
   };
 
   const handleDeleteClick = async () => {
-    const idregion = selectedCountry;
-    await apiRequest(null, `/FlyEaseApi/Paises/Delete/${idregion}`, "delete");
+    console.log(selectedSubject);
+    const { apiData } = await apiRequest(null, `subjects/${selectedSubject?.id}`, "delete");
+    console.log(apiData);
     mutate();
   };
 
@@ -66,13 +77,13 @@ export const DeleteCountry = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar pais</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar paises.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Eliminar estudiantes</h1>
+            <p className="text-muted-foreground">Aquí puedes eliminar los estudiantes.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar por numero de identificacion..."
+              placeholder="Filtrar por nombre..."
               className="max-w-sm"
               value={filter}
               onChange={handleFilterChange}
@@ -83,7 +94,7 @@ export const DeleteCountry = () => {
           </div>
           <div className="flex w-full justify-end">
             <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar pais
+              Borrar materia
             </Button>
           </div>
         </div>

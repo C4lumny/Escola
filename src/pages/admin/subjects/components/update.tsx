@@ -9,7 +9,7 @@ import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Sheet,
   SheetClose,
@@ -19,15 +19,33 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+} from "@/components/ui/select";
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
 
-export const UpdateCountries = () => {
-  const { data, loading } = useGet("/FlyEaseApi/Paises/GetAll");
-  const [filter, setFilter] = useState("");
+export const UpdateSubject = () => {
+  const { data, loading, mutate } = useGet("subjects");
   const { apiRequest } = useRequest();
-  const columnTitles = ["Id del pais", "Nombre del pais", "Fecha de registro"];
+  const teachersData = useGet("teachers");
+  const coursesData = useGet("courses");
+  const [filter, setFilter] = useState("");
+  const columnTitles = [
+    "Nombre",
+    "Cedula profesor",
+    "Apellidos profesor",
+    "Nombres profesor",
+    "Cursos dictados",
+    "Descripcion",
+  ];
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
@@ -35,6 +53,11 @@ export const UpdateCountries = () => {
     nombre: z.string().min(2, {
       message: "country must be at least 2 characters.",
     }),
+    descripcion: z.string().min(2, {
+      message: "country must be at least 2 characters.",
+    }),
+    associated_course: z.string(),
+    associated_teacher: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,31 +71,34 @@ export const UpdateCountries = () => {
     setFilter(event.target.value);
   };
 
-  const handleUpdateClick = async (updatedCountry: any, country: any) => {
-    const countryToUpdate = {
-      idpais: parseInt(country.idpais),
-      nombre: updatedCountry.nombre,
-      fecharegistro: country.fecharegistro,
-    };
-
-    apiRequest(countryToUpdate, `/FlyEaseApi/Paises/Put/${country.idpais}`, "put");
+  const handleUpdateClick = async (updatedSubject: any, subject: any) => {
+    const data = { updatedSubject, subject };
+    apiRequest(data, "subjects", "put");
+    mutate();
   };
 
-  const handleRefreshClick = (pais: any) => {
-    form.setValue("nombre", pais.nombre);
+  const handleRefreshClick = (subject: any) => {
+    form.setValue("nombre", subject.nombre);
+    form.setValue("associated_course", subject.id_curso);
+    form.setValue("associated_teacher", subject.cedula_profesor);
+    form.setValue("descripcion", subject.descripcion);
   };
 
   if (!loading) {
-    dataTable = data.response.map(
-      (item: any) =>
+    console.log(data);
+    dataTable = data.data.map(
+      (subject: any) =>
         ({
-          idpais: item.idpais,
-          nombre: item.nombre,
-          fechaRegistro: new Date(item.fecharegistro).toLocaleString(),
+          nombre: subject.nombre,
+          cedula_profesor: subject.cedula_profesor,
+          apellidos_profesor: subject.apellidos_profesor,
+          nombres_profesor: subject.nombres_profesor,
+          cursos_dictados: subject.id_curso,
+          descripcion: subject.descripcion,
           sheet: (
             <Sheet>
               <SheetTrigger>
-                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(item)} />
+                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(subject)} />
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
@@ -82,17 +108,113 @@ export const UpdateCountries = () => {
                   <Form {...form}>
                     <form
                       className="space-y-4"
-                      onSubmit={form.handleSubmit((updatedCountry) => handleUpdateClick(updatedCountry, item))}
+                      onSubmit={form.handleSubmit((updatedCountry) => handleUpdateClick(updatedCountry, subject))}
                     >
                       <FormField
                         control={form.control}
                         name="nombre"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nombre</FormLabel>
+                            <FormLabel>Nombre de la asignatura</FormLabel>
                             <FormControl>
-                              <Input placeholder="Colombia" {...field} />
+                              <Input placeholder="Química Orgánica" {...field} />
                             </FormControl>
+                            <FormDescription>
+                              Ingrese el nombre completo de la asignatura, por ejemplo, 'Química Orgánica'
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* 👇 Espacio para el input de descripcion  */}
+                      <FormField
+                        control={form.control}
+                        name="descripcion"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Descripcion de la asignatura</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Fundamentales de la física cuántica" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                              Proporcione una descripción detallada de la asignatura, por ejemplo, 'Este curso aborda
+                              los principios fundamentales de la física cuántica
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* 👇 Espacio para el select de cursos  */}
+                      <FormField
+                        control={form.control}
+                        name="associated_course"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Curso en los cuales la asignatura será dictada</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="w-[280px]">
+                                  <SelectValue placeholder="Seleccione un curso" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>Cursos</SelectLabel>
+                                  {coursesData.data.data.length > 0 ? (
+                                    coursesData.data.data.map((course: any) => {
+                                      return (
+                                        <SelectItem key={course.id} value={course.id}>
+                                          {course.id}
+                                        </SelectItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <div>No hay profesores activos</div>
+                                  )}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                            <FormDescription>
+                              Seleccione el nombre del curso que se ha asignado a esta materia
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* 👇 Espacio para el select de profesores */}
+                      <FormField
+                        control={form.control}
+                        name="associated_teacher"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Profesor que enseñará la asignatura</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="w-[280px]">
+                                  <SelectValue placeholder="Seleccione un profesor" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>Profesores</SelectLabel>
+                                  {teachersData.data.data.length > 0 ? (
+                                    teachersData.data.data.map((teacher: any) => {
+                                      return (
+                                        <SelectItem key={teacher.cedula} value={teacher.cedula}>
+                                          {teacher.cedula} - {teacher.nombres} {teacher.apellidos}
+                                        </SelectItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <div>No hay profesores activos</div>
+                                  )}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+
+                            <FormDescription>
+                              Seleccione el nombre del profesor asignado a esta materia. Ejemplo: 'Juan Pérez'.
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -111,7 +233,7 @@ export const UpdateCountries = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.idpais.toString().includes(filter));
+    filteredData = dataTable.filter((subject: any) => subject.nombre.includes(filter));
   }
   return (
     <div>
@@ -126,12 +248,12 @@ export const UpdateCountries = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Actualizar paises</h1>
-            <p className="text-muted-foreground">Aquí puedes actualizar los paises.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Actualizar materias</h1>
+            <p className="text-muted-foreground">Aquí puedes actualizar las materias.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
-            <Input placeholder="Filtrar por id..." className="max-w-sm" value={filter} onChange={handleFilterChange} />
+            <Input placeholder="Filtrar por nombre..." className="max-w-sm" value={filter} onChange={handleFilterChange} />
           </div>
           <div className="rounded-md border">
             <DataTable columnTitles={columnTitles} data={filteredData} />

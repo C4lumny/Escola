@@ -13,7 +13,6 @@ export const ViewStudents = () => {
   let filteredData: string[] = [];
 
   if (!loading) {
-    console.log(data);
     dataTable = data.map(
       (student: any) =>
         ({
