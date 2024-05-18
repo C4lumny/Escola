@@ -6,29 +6,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/viewTable";
 
-export const ViewAirports = () => {
-  const { data, loading } = useGet("/FlyEaseApi/Aeropuertos/GetAll");
+export const ViewCourses = () => {
+  const { data, loading } = useGet("courses");
   const [filter, setFilter] = useState<string>("");
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.response.map(
-      (item: any) =>
+    dataTable = data.data.map(
+      (course: any) =>
         ({
-          idaereopuerto: item.idaereopuerto,
-          nombre: item.nombre,
-          latitud: item.coordenadas.latitud,
-          longitud: item.coordenadas.longitud,
-          nombreCiudad: item.ciudad.nombre,
-          fechaRegistro: new Date(item.fecharegistro).toLocaleString(),
+          id: course.id,
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.idaereopuerto.toString().includes(filter));
+    filteredData = dataTable.filter((course: any) => course.id.includes(filter));
   }
 
-  const columnTitles = ["Id", "Nombre", "Latitud", "Longitud", "Ciudad", "Fecha de registro"];
+  const columnTitles = [
+    "ID",
+  ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
@@ -47,17 +44,12 @@ export const ViewAirports = () => {
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar aeropuertos</h1>
-            <p className="text-muted-foreground">Aqui puedes ver a los aeropuertos activos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Visualizar cursos</h1>
+            <p className="text-muted-foreground">Aqui puedes ver los cursos activos.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
-            <Input
-              placeholder="Filtrar por id..."
-              className="max-w-sm"
-              value={filter}
-              onChange={handleFilterChange}
-            />
+            <Input placeholder="Filtrar por id..." className="max-w-sm" value={filter} onChange={handleFilterChange} />
           </div>
           <div className="rounded-md border">
             <DataTable data={filteredData} columnTitles={columnTitles} />

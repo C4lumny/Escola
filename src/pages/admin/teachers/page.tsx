@@ -1,22 +1,21 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-
 import { Plus, Minus, RefreshCcw, View } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Nav } from "@/components/nav";
-import { ViewCities } from "./components/view";
-import { CreateCities } from "./components/create";
-import { DeleteCity } from "./components/delete";
+import { ViewTeachers } from "./components/view";
+import { CreateTeachers } from "./components/create";
+import { DeleteTeacher } from "./components/delete";
 import { UpdateCities } from "./components/update";
 
-export const CitiesPage = () => {
+export const TeachersPage = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
   return (
     <>
       <div className="space-y-2 mb-5">
-        <h2 className="text-2xl font-semibold tracking-tight">Ciudades</h2>
-        <p className="text-muted-foreground">CRUD de ciudades</p>
+        <h2 className="text-2xl font-semibold tracking-tight">Profesores</h2>
+        <p className="text-muted-foreground">Gestion de profesores</p>
       </div>
       <Separator className="mb-6" />
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 h-auto">
@@ -27,25 +26,25 @@ export const CitiesPage = () => {
                 icon: View,
                 title: "Visualizar",
                 link: "view",
-                variant: currentPath === "/home/airports/view" ? "default" : "ghost",
+                variant: currentPath === "/home/teachers/view" ? "default" : "ghost",
               },
               {
                 icon: Plus,
                 title: "Crear",
                 link: "create",
-                variant: currentPath === "/home/airports/create" ? "default" : "ghost",
+                variant: currentPath === "/home/teachers/create" ? "default" : "ghost",
               },
               {
                 icon: RefreshCcw,
                 title: "Actualizar",
                 link: "update",
-                variant: currentPath === "/home/airports/update" ? "default" : "ghost",
+                variant: currentPath === "/home/teachers/update" ? "default" : "ghost",
               },
               {
                 icon: Minus,
                 title: "Eliminar",
                 link: "delete",
-                variant: currentPath === "/home/airports/delete" ? "default" : "ghost",
+                variant: currentPath === "/home/teachers/delete" ? "default" : "ghost",
               },
             ]}
           />
@@ -57,10 +56,10 @@ export const CitiesPage = () => {
         <div className="flex-1 lg:max-w-4xl my-10">
           <div className="space-y-6">
             <Routes>
-              <Route path="view" element= {<ViewCities />}/>
-              <Route path="create" element={<CreateCities />} />
+              <Route path="view" element= {<ViewTeachers />}/>
+              <Route path="create" element={<CreateTeachers />} />
               <Route path="update" element={<UpdateCities />} />
-              <Route path="delete" element={<DeleteCity />} />
+              <Route path="delete" element={<DeleteTeacher />} />
             </Routes>
           </div>
         </div>

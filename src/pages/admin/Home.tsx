@@ -12,6 +12,8 @@ import { Nav } from "@/components/nav";
 import { ModeToggle } from "@/components/mode-toggle";
 import { StudentsPage } from "./students/page";
 import { SubjectsPage } from "./subjects/page";
+import { CoursesPage } from "@/pages/admin/courses/page.tsx";
+import { TeachersPage } from "./teachers/page";
 
 export const Home = () => {
   const location = useLocation();
@@ -104,8 +106,9 @@ export const Home = () => {
           <Route path="dashboard/*" element={<DashboardPage />} />
           <Route path="students/*" element={<StudentsPage />} />
           <Route path="subjects/*" element={<SubjectsPage />} />
-          {/*<Route path="courses/*" element={<PlanesPage />} />
-          <Route path="subjects/*" element={<TicketsPage />} />
+          <Route path="courses/*" element={<CoursesPage />} />
+          <Route path="teachers/*" element={<TeachersPage />} />
+          {/*<Route path="subjects/*" element={<TicketsPage />} />
           <Route path="activities/*" element={<CostumersPage />} /> */}
         </Routes>
       </div>

@@ -5,42 +5,29 @@ import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/viewTable";
-import { Image } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-export const ViewCities = () => {
-  const { data, loading } = useGet("/FlyEaseApi/Ciudades/GetAll");
+export const ViewTeachers = () => {
+  const { data, loading } = useGet("teachers");
   const [filter, setFilter] = useState<string>("");
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.response.map(
-      (item: any) =>
+    dataTable = data.data.map(
+      (teacher: any) =>
         ({
-          idciudad: item.idciudad,
-          nombre: item.nombre,
-          nombreRegion: item.region.nombre,
-          fechaRegistro: new Date(item.fecharegistro).toLocaleString(),
-          imagen: (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Image className="cursor-pointer" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <img className="w-96 h-72" src={`data:image/jpeg;base64,${item.imagen}`} />
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ),
+          cedula: teacher.cedula,
+          nombres: teacher.nombres,
+          apellidos: teacher.apellidos,
+          telefono: teacher.telefono,
+          correo: teacher.correo,
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.idciudad.toString().includes(filter));
+    filteredData = dataTable.filter((teacher: any) => teacher.cedula.toString().includes(filter));
   }
 
-  const columnTitles = ["Id de la ciudad", "Nombre de la ciudad", "Nombre de la region", "Fecha de registro"];
+  const columnTitles = ["Cedula", "Nombres", "Apellidos", "Telefono", "Correo"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
@@ -59,8 +46,8 @@ export const ViewCities = () => {
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar ciudades</h1>
-            <p className="text-muted-foreground">Aqui puedes ver las ciudades activos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Visualizar profesores</h1>
+            <p className="text-muted-foreground">Aqui puedes ver los profesores activos.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">

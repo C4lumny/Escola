@@ -7,57 +7,31 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/viewTable";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const DeleteAirport = () => {
-  const { data, loading, mutate } = useGet("/FlyEaseApi/Aeropuertos/GetAll");
+export const DeleteCourse = () => {
+  const { data, loading, mutate } = useGet("courses");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [selectedAirport, setSelectedAirport] = useState<number>();
-  let dataTable: string[] = [];
+  const [selectedCourse, setSelectedCourse] = useState<any>();
   let filteredData: string[] = [];
-
-  if (!loading) {
-    dataTable = data.response.map(
-      (item: any) =>
-        ({
-          deleteCheckbox: (
-            <Checkbox
-              checked={item.idaereopuerto === selectedAirport}
-              className="w-4 h-4"
-              onCheckedChange={() => handleCheckboxChange(item.idaereopuerto)}
-            />
-            // <Checkbox className="w-4 h-4" />
-          ),
-          idaereopuerto: item.idaereopuerto,
-          nombre: item.nombre,
-          latitud: item.coordenadas.latitud,
-          longitud: item.coordenadas.longitud,
-          nombreCiudad: item.ciudad.nombre,
-          fechaRegistro: new Date(item.fecharegistro).toLocaleString(),
-        } || [])
-    );
-
-    filteredData = dataTable.filter((item: any) => item.idaereopuerto.toString().includes(filter));
-  }
-
-  const columnTitles = ["", "Id", "Nombre", "Latitud", "Longitud", "Ciudad", "Fecha de registro"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
   };
 
-  const handleCheckboxChange = (idciudad: number) => {
-    setSelectedAirport(idciudad);
+  const handleCheckboxChange = (curso: any) => {
+    setSelectedCourse(curso);
   };
 
   const handleDeleteClick = async () => {
-    const idciudad = selectedAirport;
-    await apiRequest(null, `/FlyEaseApi/Aeropuertos/Delete/${idciudad}`, "delete");
+    await apiRequest(null, `courses/${selectedCourse?.id}`, "delete");
     mutate();
   };
 
-  //TODO: implementar un toaster (se encuentra en shadcn-ui) para mostrar un mensaje de exito o error al eliminar una region, y actualizar la tabla de regiones despues de eliminar una region
+  if (data && data.data) {
+    filteredData = data.data.filter((course: any) => course.id.includes(filter));
+  }
 
   return (
     <div>
@@ -72,8 +46,8 @@ export const DeleteAirport = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar aeropuertos</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los aeropuertos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Eliminar cursos</h1>
+            <p className="text-muted-foreground">Aquí puedes eliminar los cursos.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -85,11 +59,38 @@ export const DeleteAirport = () => {
             />
           </div>
           <div className="rounded-md border">
-            <DataTable columnTitles={columnTitles} data={filteredData} />
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead></TableHead>
+                  <TableHead>ID</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredData.length > 0 ? (
+                  filteredData.map((course: any) => (
+                    <TableRow key={course.id}>
+                      <TableCell className="w-10">
+                        <Checkbox
+                          className="w-4 h-4"
+                          checked={course === selectedCourse}
+                          onCheckedChange={() => handleCheckboxChange(course)}
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">{course.id}</TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6}>No hay registros</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
           <div className="flex w-full justify-end">
             <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar aeropuerto
+              Borrar curso
             </Button>
           </div>
         </div>

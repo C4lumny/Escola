@@ -8,64 +8,54 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Image } from "lucide-react";
 
-export const DeleteCity = () => {
-  const { data, loading, mutate } = useGet("/FlyEaseApi/Ciudades/GetAll");
+export const DeleteTeacher = () => {
+  const { data, loading, mutate } = useGet("teachers");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [selectedCity, setSelectedCity] = useState<number>();
+  const [selectedTeacher, setSelectedTeacher] = useState<any>();
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.response.map(
-      (item: any) =>
+    dataTable = data.data.map(
+      (teacher: any) =>
         ({
           deleteCheckbox: (
             <Checkbox
-              checked={item.idciudad === selectedCity}
+              checked={teacher === selectedTeacher}
               className="w-4 h-4"
-              onCheckedChange={() => handleCheckboxChange(item.idciudad)}
+              onCheckedChange={() => handleCheckboxChange(teacher)}
             />
             // <Checkbox className="w-4 h-4" />
           ),
-          idciudad: item.idciudad,
-          nombre: item.nombre,
-          nombreRegion: item.region.nombre,
-          fechaRegistro: new Date(item.fecharegistro).toLocaleString(),
-          imagen: (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Image className="cursor-pointer" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <img className="w-96 h-72" src={`data:image/jpeg;base64,${item.imagen}`} />
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ),
+          cedula: teacher.cedula,
+          nombres: teacher.nombres,
+          apellidos: teacher.apellidos,
+          telefono: teacher.telefono,
+          correo: teacher.correo,
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.nombre.toString().includes(filter));
+    filteredData = dataTable.filter((profesor: any) => profesor.nombres.includes(filter));
   }
 
-  const columnTitles = ["","Id de la ciudad", "Nombre de la ciudad", "Nombre de la region", "Fecha de registro"];
+  const columnTitles = ["", "Cedula", "Nombres", "Apellidos", "Telefono", "Correo"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
   };
 
-  const handleCheckboxChange = (idciudad: number) => {
-    setSelectedCity(idciudad);
+  const handleCheckboxChange = (idciudad: any) => {
+   
+   
+    setSelectedTeacher(idciudad);
   };
 
   const handleDeleteClick = async () => {
-    const idciudad = selectedCity;
-    await apiRequest(null, `/FlyEaseApi/Ciudades/Delete/${idciudad}`, "delete");
+    console.log(selectedTeacher);
+    const request = await apiRequest(null, `teachers/${selectedTeacher?.cedula}`, "delete");
+    console.log(request);
     mutate();
   };
 
@@ -84,8 +74,8 @@ export const DeleteCity = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar ciudades</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar las ciudades.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Eliminar profesores</h1>
+            <p className="text-muted-foreground">Aquí puedes eliminar los profesores.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -101,7 +91,7 @@ export const DeleteCity = () => {
           </div>
           <div className="flex w-full justify-end">
             <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar ciudad
+              Borrar profesor
             </Button>
           </div>
         </div>

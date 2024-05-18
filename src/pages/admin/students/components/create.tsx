@@ -266,7 +266,7 @@ export const CreateStudents = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Crear aerolinea</Button>
+              <Button type="submit">Crear estudiante</Button>
             </form>
           </Form>
         </>
