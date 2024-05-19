@@ -106,7 +106,7 @@ export const UpdateCourses = () => {
                       />
                       <SheetFooter>
                         <SheetClose>
-                          //TODO: replicar el toast en el resto de los modales
+                          {/* //TODO: replicar el toast en el resto de los modales */}
                           <Button type="submit">Actualizar y finalizar</Button>
                         </SheetClose>
                       </SheetFooter>

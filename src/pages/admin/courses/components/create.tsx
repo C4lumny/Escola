@@ -65,7 +65,7 @@ export const CreateCourses = () => {
               </FormItem>
             )}
           />
-          //TODO: replicar el toast en el resto de los modales
+          {/* //TODO: replicar el toast en el resto de los modales */}
           <Button type="submit">Crear curso</Button>
         </form>
       </Form>
