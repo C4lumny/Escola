@@ -30,12 +30,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const onSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     setIsLoading(true);
-
     try {
       const request = await apiRequest(credentials, "/login", "post");
       const apiResponse = request.apiData;
-
-      console.log(apiResponse);
 
       if (apiResponse.statusCode === 200) {
         setIsLoading(false);

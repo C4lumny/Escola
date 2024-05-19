@@ -4,7 +4,7 @@ import { useUserContext } from "@/contexts/userProvider";
 import { useEffect } from "react";
 // 👇UI Imports and icons
 import EscolaIcon from "@/assets/escola-high-resolution-logo-white-transparent.png";
-import { PersonStanding, Book, Briefcase, GraduationCap, LayoutDashboard, Pen, LogOutIcon } from "lucide-react";
+import { PersonStanding, Book, Briefcase, GraduationCap, LayoutDashboard, Pen, LogOutIcon, Users } from "lucide-react";
 import { DashboardPage } from "@/pages/admin/dashboard/page";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { StudentsPage } from "./students/page";
 import { SubjectsPage } from "./subjects/page";
 import { CoursesPage } from "@/pages/admin/courses/page.tsx";
 import { TeachersPage } from "./teachers/page";
+import { ParentsPage } from "./parents/page";
 
 export const Home = () => {
   const location = useLocation();
@@ -64,6 +65,12 @@ export const Home = () => {
                 link: "students",
               },
               {
+                title: "Acudientes",
+                icon: Users,
+                variant: currentPath === "/home/parents" ? "default" : "ghost",
+                link: "parents",
+              },
+              {
                 title: "Materias",
                 icon: Book,
                 variant: currentPath === "/home/subjects" ? "default" : "ghost",
@@ -108,8 +115,8 @@ export const Home = () => {
           <Route path="subjects/*" element={<SubjectsPage />} />
           <Route path="courses/*" element={<CoursesPage />} />
           <Route path="teachers/*" element={<TeachersPage />} />
-          {/*<Route path="subjects/*" element={<TicketsPage />} />
-          <Route path="activities/*" element={<CostumersPage />} /> */}
+          <Route path="parents/*" element={<ParentsPage />} />
+          {/* <Route path="activities/*" element={<CostumersPage />} /> */}
         </Routes>
       </div>
     </div>

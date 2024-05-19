@@ -9,34 +9,34 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
 
-export const DeleteTeacher = () => {
-  const { data, loading, mutate } = useGet("teachers");
+export const DeleteParent = () => {
+  const { data, loading, mutate } = useGet("parents");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [selectedTeacher, setSelectedTeacher] = useState<any>();
+  const [selectedParent, setSelectedParent] = useState<any>();
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
     dataTable = data.data.map(
-      (teacher: any) =>
+      (parent: any) =>
         ({
           deleteCheckbox: (
             <Checkbox
-              checked={teacher === selectedTeacher}
+              checked={parent === selectedParent}
               className="w-4 h-4"
-              onCheckedChange={() => handleCheckboxChange(teacher)}
+              onCheckedChange={() => handleCheckboxChange(parent)}
             />
           ),
-          cedula: teacher.cedula,
-          nombres: teacher.nombres,
-          apellidos: teacher.apellidos,
-          telefono: teacher.telefono,
-          correo: teacher.correo,
+          cedula: parent.cedula,
+          nombres: parent.nombres,
+          apellidos: parent.apellidos,
+          telefono: parent.telefono,
+          correo: parent.correo,
         } || [])
     );
 
-    filteredData = dataTable.filter((profesor: any) => profesor.nombres.includes(filter));
+    filteredData = dataTable.filter((parent: any) => parent.nombres.includes(filter));
   }
 
   const columnTitles = ["", "Cedula", "Nombres", "Apellidos", "Telefono", "Correo"];
@@ -45,12 +45,12 @@ export const DeleteTeacher = () => {
     setFilter(event.currentTarget.value);
   };
 
-  const handleCheckboxChange = (profesor: any) => {
-    setSelectedTeacher(profesor);
+  const handleCheckboxChange = (parent: any) => {
+    setSelectedParent(parent);
   };
-  
+
   const handleDeleteClick = async () => {
-    await apiRequest(null, `teachers/${selectedTeacher?.cedula}`, "delete");
+    await apiRequest(null, `parents/${selectedParent?.cedula}`, "delete");
     mutate();
   };
 
@@ -69,8 +69,8 @@ export const DeleteTeacher = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar profesores</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los profesores.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Eliminar acudientes</h1>
+            <p className="text-muted-foreground">Aquí puedes eliminar los acudientes.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -86,7 +86,7 @@ export const DeleteTeacher = () => {
           </div>
           <div className="flex w-full justify-end">
             <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar profesor
+              Borrar acudiente
             </Button>
           </div>
         </div>
