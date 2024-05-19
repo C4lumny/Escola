@@ -31,6 +31,7 @@ import {
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   document_type: z.string({ required_error: "Por favor seleccione un tipo de documento" }),
@@ -95,10 +96,14 @@ export const UpdateStudents = () => {
     setFilter(event.target.value);
   };
 
-  const handleUpdateClick = (updatedStudent: any, student: any) => {
+  const handleUpdateClick = async (updatedStudent: any, student: any) => {
     const data = { updatedStudent, student };
-    console.log(data);
-    apiRequest(data, "students", "put");
+    const response = await apiRequest(data, "students", "put");
+    if (!response.error) {
+      toast.success("Estudiante actualizado con exito");
+    } else {
+      toast.error("Error al actualizar el estudiante");
+    }
     mutate();
   };
 

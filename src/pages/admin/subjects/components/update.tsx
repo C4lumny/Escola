@@ -31,6 +31,7 @@ import {
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
+import { toast } from "sonner";
 
 export const UpdateSubject = () => {
   const { data, loading, mutate } = useGet("subjects");
@@ -73,7 +74,12 @@ export const UpdateSubject = () => {
 
   const handleUpdateClick = async (updatedSubject: any, subject: any) => {
     const data = { updatedSubject, subject };
-    apiRequest(data, "subjects", "put");
+    const response = await apiRequest(data, "subjects", "put");
+    if (!response.error) {
+      toast.success("Materia actualizada con exito");
+    } else {
+      toast.error("Error al actualizar la materia");
+    }
     mutate();
   };
 

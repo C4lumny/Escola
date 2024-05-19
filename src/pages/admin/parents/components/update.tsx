@@ -9,7 +9,15 @@ import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Sheet,
   SheetClose,
@@ -22,12 +30,20 @@ import {
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
+import { toast } from "sonner";
 
 export const UpdateCities = () => {
   const { data, loading, mutate } = useGet("parents");
   const [filter, setFilter] = useState("");
   const { apiRequest } = useRequest();
-  const columnTitles = ["Cedula", "Nombres", "Apellidos", "Telefono", "Correo", ""];
+  const columnTitles = [
+    "Cedula",
+    "Nombres",
+    "Apellidos",
+    "Telefono",
+    "Correo",
+    "",
+  ];
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
@@ -64,7 +80,11 @@ export const UpdateCities = () => {
   const handleUpdateClick = async (updatedParent: any, parent: any) => {
     const data = { updatedParent, parent };
     const response = await apiRequest(data, "parents", "put");
-    console.log(response);
+    if (!response.error) {
+      toast.success("Curso actualizado con exito");
+    } else {
+      toast.error("Error al actualizar el curso");
+    }
     mutate();
   };
 
@@ -88,7 +108,10 @@ export const UpdateCities = () => {
           sheet: (
             <Sheet>
               <SheetTrigger>
-                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(parent)} />
+                <RefreshCcwDot
+                  className="cursor-pointer"
+                  onClick={() => handleRefreshClick(parent)}
+                />
               </SheetTrigger>
               <SheetContent className="overflow-auto">
                 <SheetHeader>
@@ -98,7 +121,9 @@ export const UpdateCities = () => {
                   <Form {...form}>
                     <form
                       className="space-y-4"
-                      onSubmit={form.handleSubmit((updatedTeacher) => handleUpdateClick(updatedTeacher, parent))}
+                      onSubmit={form.handleSubmit((updatedTeacher) =>
+                        handleUpdateClick(updatedTeacher, parent)
+                      )}
                     >
                       {/* 👇 Espacio para el input de cedula  */}
                       <FormField
@@ -110,7 +135,9 @@ export const UpdateCities = () => {
                             <FormControl>
                               <Input placeholder="Cedula" {...field} />
                             </FormControl>
-                            <FormDescription>El numero de cedula del acudiente a ingresar.</FormDescription>
+                            <FormDescription>
+                              El numero de cedula del acudiente a ingresar.
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -125,7 +152,9 @@ export const UpdateCities = () => {
                             <FormControl>
                               <Input placeholder="Jose" {...field} />
                             </FormControl>
-                            <FormDescription>Nombres del acudiente. Ej: Jesús Carlos</FormDescription>
+                            <FormDescription>
+                              Nombres del acudiente. Ej: Jesús Carlos
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -138,9 +167,14 @@ export const UpdateCities = () => {
                           <FormItem>
                             <FormLabel>Apellidos</FormLabel>
                             <FormControl>
-                              <Input placeholder="Hernández Restrepo" {...field} />
+                              <Input
+                                placeholder="Hernández Restrepo"
+                                {...field}
+                              />
                             </FormControl>
-                            <FormDescription>Apellidos del acudiente. Ej: Ospino Hernández</FormDescription>
+                            <FormDescription>
+                              Apellidos del acudiente. Ej: Ospino Hernández
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -153,10 +187,14 @@ export const UpdateCities = () => {
                           <FormItem>
                             <FormLabel>Correo electronico / Email</FormLabel>
                             <FormControl>
-                              <Input placeholder="example@example.com" {...field} />
+                              <Input
+                                placeholder="example@example.com"
+                                {...field}
+                              />
                             </FormControl>
                             <FormDescription>
-                              Correo electrónico del acudiente, información relevante de contacto
+                              Correo electrónico del acudiente, información
+                              relevante de contacto
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -172,7 +210,10 @@ export const UpdateCities = () => {
                             <FormControl>
                               <Input placeholder="3000000000" {...field} />
                             </FormControl>
-                            <FormDescription>Teléfono del acudiente, información relevante de contacto</FormDescription>
+                            <FormDescription>
+                              Teléfono del acudiente, información relevante de
+                              contacto
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -191,7 +232,9 @@ export const UpdateCities = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((teacher: any) => teacher.nombres.includes(filter));
+    filteredData = dataTable.filter((teacher: any) =>
+      teacher.nombres.includes(filter)
+    );
   }
   return (
     <div>
@@ -206,8 +249,12 @@ export const UpdateCities = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Actualizar acudientes</h1>
-            <p className="text-muted-foreground">Aquí puedes actualizar los acudientes</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Actualizar acudientes
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes actualizar los acudientes
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
