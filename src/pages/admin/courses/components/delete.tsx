@@ -8,6 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export const DeleteCourse = () => {
   const { data, loading, mutate } = useGet("courses");
@@ -25,8 +37,14 @@ export const DeleteCourse = () => {
   };
 
   const handleDeleteClick = async () => {
-    await apiRequest(null, `courses/${selectedCourse?.id}`, "delete");
+    const response = await apiRequest(null, `courses/${selectedCourse?.id}`, "delete");
     mutate();
+
+    if (!response.error) {
+      toast.success("Curso eliminado con exito");
+    } else {
+      toast.error("Error al eliminar el curso");
+    }
   };
 
   if (data && data.data) {
@@ -89,9 +107,26 @@ export const DeleteCourse = () => {
             </Table>
           </div>
           <div className="flex w-full justify-end">
-            <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar curso
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button disabled={!selectedCourse} variant="destructive">
+                  Borrar curso
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>¿Estás seguro de borrar el curso?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta accion no puede ser revertida. Esto borrará permanentemente el curso y se removerá la
+                    información de nuestros servidores
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteClick}>Continuar</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       )}
