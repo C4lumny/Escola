@@ -19,17 +19,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
@@ -39,7 +28,6 @@ export const UpdateCourses = () => {
   const { data, loading, mutate } = useGet("courses");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [shouldClose, setShouldClose] = useState<boolean>(false);
   const columnTitles = ["ID", "Acciones"];
   let dataTable: string[] = [];
   let filteredData: string[] = [];
@@ -70,12 +58,8 @@ export const UpdateCourses = () => {
     const response = await apiRequest(data, "courses", "put");
     if (!response.error) {
       toast.success("Curso actualizado con exito");
-      setShouldClose(true);
-      console.log("hola pase");
     } else {
       toast.error("Error al actualizar el curso");
-      setShouldClose(false);
-      console.log("hola no pase");
     }
     mutate();
   };
@@ -121,26 +105,11 @@ export const UpdateCourses = () => {
                         )}
                       />
                       <SheetFooter>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button>Actualizar y finalizar</Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>¿Estás seguro de actualizar el curso?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Esta accion no puede ser revertida. Esto actualizará el curso y se removerá la
-                                información previa a la actualización de nuestros servidores
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction type="submit">Continuar</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                        <SheetClose>
+                          //TODO: replicar el toast en el resto de los modales
+                          <Button type="submit">Actualizar y finalizar</Button>
+                        </SheetClose>
                       </SheetFooter>
-                      {shouldClose && <SheetClose />}
                     </form>
                   </Form>
                 </div>
