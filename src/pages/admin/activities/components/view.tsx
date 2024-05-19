@@ -6,47 +6,35 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/viewTable";
 
-export interface Clientes {
-  numerodocumento: string;
-  tipodocumento: string;
-  nombres: string;
-  apellidos: string;
-  celular: string;
-  correo: string;
-  fecharegistro: Date;
-}
-
-export const ViewCostumers = () => {
-  const { data, loading } = useGet("/FlyEaseApi/Clientes/GetAll");
+export const ViewActivities = () => {
+  const { data, loading } = useGet("activities");
   const [filter, setFilter] = useState<string>("");
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.response.map(
-      (client: Clientes) =>
+    dataTable = data.data.map(
+      (activity: any) =>
         ({
-          document: client.numerodocumento,
-          tipodocumento: client.tipodocumento,
-          nombre: client.nombres,
-          apellidos: client.apellidos,
-          celular: client.celular,
-          correo: client.correo,
-          fechaRegistro: new Date(client.fecharegistro).toLocaleString(),
+          id: activity.id,
+          titulo: activity.titulo,
+          descripcion: activity.descripcion,
+          fecha_inicio: activity.fecha_inicio,
+          fecha_fin: activity.fecha_fin,
+          nombre_asignatura: activity.nombre_asignatura,
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.nombre.toLowerCase().includes(filter.toLowerCase()));
+    filteredData = dataTable.filter((activity: any) => activity.titulo.toLowerCase().includes(filter.toLowerCase()));
   }
 
   const columnTitles = [
-    "Documento",
-    "Tipo de documento",
-    "Nombres",
-    "Apellidos",
-    "Celular",
-    "Correo",
-    "Fecha de registro",
+    "ID",
+    "Titulo",
+    "Descripcion",
+    "Fecha inicio",
+    "Fecha fin",
+    "Nombre de la asignatura",
   ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -66,8 +54,8 @@ export const ViewCostumers = () => {
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar clientes</h1>
-            <p className="text-muted-foreground">Aqui puedes ver los clientes activos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">Visualizar actividades</h1>
+            <p className="text-muted-foreground">Aqui puedes ver las actividades.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
