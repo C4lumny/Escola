@@ -2,6 +2,8 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/compon
 import { buttonVariants } from "@/components/ui/button";
 //Assets
 import { Icons } from "@/components/ui/icons";
+import { ModeToggle } from "../mode-toggle";
+import { LogOut } from "lucide-react";
 
 export const Navbar = () => {
   return (
@@ -18,12 +20,16 @@ export const Navbar = () => {
           {/* desktop */}
           <nav className="hidden md:flex gap-2">
             <a
-              className={`text-[17px] ${buttonVariants({
-                variant: "ghost",
+              className={`text-[17px] gap-3 ${buttonVariants({
+                variant: "outline",
               })}`}
             >
-              Hola
+              <LogOut size={20} />
+              Cerrar sesion
             </a>
+            <div className="ml-4">
+              <ModeToggle />
+            </div>
           </nav>
         </NavigationMenuList>
       </NavigationMenu>

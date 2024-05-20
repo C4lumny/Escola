@@ -2,6 +2,7 @@ import { Login } from "./pages/Login";
 import { Home } from "./pages/admin/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/theme-provider";
+import { Student } from "./pages/students/students";
 
 export const App = () => {
   return (
@@ -13,6 +14,8 @@ export const App = () => {
         <Route path="/login" element={<Login />} />
         {/* 👇 Ruta del dashboard */}
         <Route path="/admins/*" element={<Home />} />
+        {/* 👇 Ruta de la pagina de los estudiantes */}
+        <Route path="/students/*" element={<Student />} />
       </Routes>
     </ThemeProvider>
   );
