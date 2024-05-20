@@ -141,11 +141,11 @@ export const CreateStudents = () => {
                 name="nro_documento"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Numero de documento</FormLabel>
+                    <FormLabel>Número de documento</FormLabel>
                     <FormControl>
                       <Input placeholder="10XXXXXXXX" {...field} />
                     </FormControl>
-                    <FormDescription>El numero de documento del estudiante a ingresar.</FormDescription>
+                    <FormDescription>El número de documento del estudiante a ingresar.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

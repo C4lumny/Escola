@@ -87,7 +87,7 @@ export const CreateParents = () => {
                   <Input placeholder="Cedula" {...field} />
                 </FormControl>
                 <FormDescription>
-                  El numero de cedula del acudiente a ingresar.
+                  El número de cedula del acudiente a ingresar.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

@@ -13,29 +13,19 @@ export const ViewActivities = () => {
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.data.map(
-      (activity: any) =>
-        ({
-          id: activity.id,
-          titulo: activity.titulo,
-          descripcion: activity.descripcion,
-          fecha_inicio: activity.fecha_inicio,
-          fecha_fin: activity.fecha_fin,
-          nombre_asignatura: activity.nombre_asignatura,
-        } || [])
-    );
+    dataTable = data.data.map((activity: any) => ({
+      id: activity.id,
+      titulo: activity.titulo,
+      descripcion: activity.descripcion,
+      fecha_inicio: new Date(activity.fecha_inicio).toLocaleDateString(),
+      fecha_fin: new Date(activity.fecha_fin).toLocaleDateString(),
+      nombre_asignatura: activity.nombre_asignatura,
+    }));
 
     filteredData = dataTable.filter((activity: any) => activity.titulo.toLowerCase().includes(filter.toLowerCase()));
   }
 
-  const columnTitles = [
-    "ID",
-    "Titulo",
-    "Descripcion",
-    "Fecha inicio",
-    "Fecha fin",
-    "Nombre de la asignatura",
-  ];
+  const columnTitles = ["ID", "Titulo", "Descripcion", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);

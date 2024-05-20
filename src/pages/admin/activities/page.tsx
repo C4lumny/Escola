@@ -4,8 +4,8 @@ import { Minus, Plus, RefreshCcw, View } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Nav } from "@/components/nav";
 import { ViewActivities } from "./components/view";
-import { DeleteCostumers } from "./components/delete";
-import { UpdateCostumers } from "./components/update";
+import { DeleteActivity } from "./components/delete";
+import { UpdateActivity } from "./components/update";
 import { CreateActivities } from "./components/create";
 
 export const ActivitiesPage = () => {
@@ -64,8 +64,8 @@ export const ActivitiesPage = () => {
             <Routes>
               <Route path="view" element={<ViewActivities />} />
               <Route path="create" element={<CreateActivities />} /> 
-              <Route path="update" element={<UpdateCostumers />} />
-              <Route path="delete" element={<DeleteCostumers />} />
+              <Route path="update" element={<UpdateActivity />} />
+              <Route path="delete" element={<DeleteActivity />} />
             </Routes>
           </div>
         </div>

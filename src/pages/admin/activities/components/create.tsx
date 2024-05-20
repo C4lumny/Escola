@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRequest } from "@/hooks/useApiRequest";
+import { useGet } from "@/hooks/useGet";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -16,45 +17,60 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
-import { useGet } from "@/hooks/useGet";
 import { Textarea } from "@/components/ui/textarea";
+import { isBefore, startOfToday, format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   titulo: z
-    .string({ required_error: "Por favor ingrese un numero de documento" })
-    .min(5, { message: "El numero de documento debe tener al menos 5 caracteres" })
-    .max(15, { message: "El numero de documento no debe tener más de 15 caracteres" }),
+    .string({ required_error: "Por favor ingrese un titulo de la actividad" })
+    .min(5, { message: "El titulo de la actividad debe tener al menos 5 caracteres" })
+    .max(15, { message: "El titulo de la actividad no debe tener más de 15 caracteres" }),
   descripcion: z
     .string({ required_error: "Por favor ingrese un nombre" })
-    .min(1, {
-      message: "El nombre del estudiante debe tener al menos 2 caracteres.",
+    .min(5, {
+      message: "La descripción debe tener al menos 5 caracteres",
     })
-    .max(20, {
-      message: "El nombre no debe tener más de 20 caracteres",
+    .max(50, {
+      message: "La descripción no debe tener más de 20 caracteres",
     }),
-  fecha_inicio: z.string({ required_error: "Por favor ingrese una contraseña" }),
-  fecha_fin: z.string({ required_error: "Por favor seleccione un curso" }),
-  asignatura: z.string({ required_error: "Por favor seleccione un acudiente" }),
+  date: z.object(
+    {
+      from: z.date({ required_error: "Por favor seleccione una fecha de inicio" }),
+      to: z.date({ required_error: "Por favor seleccione una fecha de fin" }),
+    },
+    { required_error: "Por favor seleccione una fecha" }
+  ),
+  asignatura: z.string({ required_error: "Por favor seleccione una asignatura" }),
 });
 
 export const CreateActivities = () => {
   const { apiRequest } = useRequest();
   const subjectsData = useGet("subjects");
-
+  const today = startOfToday();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       titulo: "",
       descripcion: "",
-      fecha_inicio: "",
-      fecha_fin: "",
-      asignatura: "",
+      date: {},
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+
     const response = await apiRequest(values, "activities", "post");
-    console.log(response);
+    if (!response.error) {
+      toast.success("Estudiante creado con exito");
+      form.reset();
+    } else {
+      toast.error("Error al crear el estudiante", {});
+    }
   };
 
   return (
@@ -100,31 +116,51 @@ export const CreateActivities = () => {
                   </FormItem>
                 )}
               />
-              {/* 👇 Espacio para el input de apellidos  */}
-              <FormField
-                control={form.control}
-                name="fecha_inicio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fecha de inicio</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Hernández Restrepo" {...field} />
-                    </FormControl>
-                    <FormDescription>Apellidos del acudiente. Ej: Ospino Hernández</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               {/* 👇 Espacio para el input de la fecha */}
               <FormField
                 control={form.control}
-                name="fecha_fin"
+                name="date"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fecha de finalización</FormLabel>
-                    <FormControl>
-                      <Input placeholder="jesus_profesor" {...field} />
-                    </FormControl>
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Rango de fecha de la actividad</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            id="date"
+                            variant={"outline"}
+                            className={cn(
+                              "w-[300px] justify-start text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {field.value?.from ? (
+                              field.value.to ? (
+                                <>
+                                  {format(field.value.from, "LLL dd, y")} - {format(field.value.to, "LLL dd, y")}
+                                </>
+                              ) : (
+                                format(field.value.from, "LLL dd, y")
+                              )
+                            ) : (
+                              <span>Seleccione una fecha</span>
+                            )}
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          initialFocus
+                          mode="range"
+                          defaultMonth={field.value?.from}
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          numberOfMonths={2}
+                          disabled={(date) => isBefore(date, today)}
+                        />
+                      </PopoverContent>
+                    </Popover>
                     <FormDescription>Usuario del estudiante, importante para el inicio de sesión</FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -149,7 +185,7 @@ export const CreateActivities = () => {
                           {subjectsData.data.data.length > 0 ? (
                             subjectsData.data.data.map((subject: any) => {
                               return (
-                                <SelectItem key={subject.id} value={subject.id}>
+                                <SelectItem key={subject.id.toString()} value={subject.id.toString()}>
                                   {subject.nombre}
                                 </SelectItem>
                               );

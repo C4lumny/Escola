@@ -101,10 +101,10 @@ export const DeleteSubject = () => {
         <div className="space-y-5">
           <div>
             <h1 className="text-xl font-semibold tracking-tight">
-              Eliminar estudiantes
+              Eliminar materia
             </h1>
             <p className="text-muted-foreground">
-              Aquí puedes eliminar los estudiantes.
+              Aquí puedes eliminar las materias.
             </p>
           </div>
           <Separator className="my-5" />
@@ -129,11 +129,11 @@ export const DeleteSubject = () => {
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>
-                    ¿Estás seguro de borrar el materia?
+                    ¿Estás seguro de borrar la materia?
                   </AlertDialogTitle>
                   <AlertDialogDescription>
                     Esta accion no puede ser revertida. Esto borrará
-                    permanentemente el materia y se removerá la información de
+                    permanentemente la materia y se removerá la información de
                     nuestros servidores
                   </AlertDialogDescription>
                 </AlertDialogHeader>
