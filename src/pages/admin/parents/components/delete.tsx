@@ -8,6 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export const DeleteParent = () => {
   const { data, loading, mutate } = useGet("parents");
@@ -36,10 +48,19 @@ export const DeleteParent = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((parent: any) => parent.nombres.includes(filter));
+    filteredData = dataTable.filter((parent: any) =>
+      parent.nombres.includes(filter)
+    );
   }
 
-  const columnTitles = ["", "Cedula", "Nombres", "Apellidos", "Telefono", "Correo"];
+  const columnTitles = [
+    "",
+    "Cedula",
+    "Nombres",
+    "Apellidos",
+    "Telefono",
+    "Correo",
+  ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
@@ -50,8 +71,15 @@ export const DeleteParent = () => {
   };
 
   const handleDeleteClick = async () => {
-    await apiRequest(null, `parents/${selectedParent?.cedula}`, "delete");
+    const response = await apiRequest(null, `parents/${selectedParent?.cedula}`, "delete");
     mutate();
+
+    if (!response.error) {
+      toast.success("Acudiente eliminado con exito");
+    } else {
+      toast.error("Error al eliminar el acudiente");
+    }
+
   };
 
   //TODO: implementar un toaster (se encuentra en shadcn-ui) para mostrar un mensaje de exito o error al eliminar una region, y actualizar la tabla de regiones despues de eliminar una region
@@ -69,8 +97,12 @@ export const DeleteParent = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar acudientes</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los acudientes.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar acudientes
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar los acudientes.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -85,9 +117,31 @@ export const DeleteParent = () => {
             <DataTable columnTitles={columnTitles} data={filteredData} />
           </div>
           <div className="flex w-full justify-end">
-            <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar acudiente
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button disabled={!selectedParent} variant="destructive">
+                  Borrar acudiente
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar el acudiente?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente el acudiente y se removerá la información de
+                    nuestros servidores
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       )}

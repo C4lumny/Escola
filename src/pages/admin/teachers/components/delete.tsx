@@ -8,6 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export const DeleteTeacher = () => {
   const { data, loading, mutate } = useGet("teachers");
@@ -36,10 +48,19 @@ export const DeleteTeacher = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((profesor: any) => profesor.nombres.includes(filter));
+    filteredData = dataTable.filter((profesor: any) =>
+      profesor.nombres.includes(filter)
+    );
   }
 
-  const columnTitles = ["", "Cedula", "Nombres", "Apellidos", "Telefono", "Correo"];
+  const columnTitles = [
+    "",
+    "Cedula",
+    "Nombres",
+    "Apellidos",
+    "Telefono",
+    "Correo",
+  ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
@@ -48,10 +69,17 @@ export const DeleteTeacher = () => {
   const handleCheckboxChange = (profesor: any) => {
     setSelectedTeacher(profesor);
   };
-  
+
   const handleDeleteClick = async () => {
-    await apiRequest(null, `teachers/${selectedTeacher?.cedula}`, "delete");
+    const response = await apiRequest(null, `teachers/${selectedTeacher?.cedula}`, "delete");
     mutate();
+
+    if (!response.error) {
+      toast.success("Profesor eliminado con exito");
+    } else {
+      toast.error("Error al eliminar el profesor");
+    }
+
   };
 
   //TODO: implementar un toaster (se encuentra en shadcn-ui) para mostrar un mensaje de exito o error al eliminar una region, y actualizar la tabla de regiones despues de eliminar una region
@@ -69,8 +97,12 @@ export const DeleteTeacher = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar profesores</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los profesores.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar profesores
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar los profesores.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -85,9 +117,31 @@ export const DeleteTeacher = () => {
             <DataTable columnTitles={columnTitles} data={filteredData} />
           </div>
           <div className="flex w-full justify-end">
-            <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar profesor
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button disabled={!selectedTeacher} variant="destructive">
+                  Borrar profesor
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar el profesor?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente el profesor y se removerá la información de
+                    nuestros servidores
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       )}

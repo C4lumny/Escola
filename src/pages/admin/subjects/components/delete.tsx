@@ -8,6 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export const DeleteSubject = () => {
   const { data, loading, mutate } = useGet("subjects");
@@ -29,15 +41,17 @@ export const DeleteSubject = () => {
             />
           ),
           nombre: subject.nombre,
-          cedula_profesor: subject.cedula_profesor, 
+          cedula_profesor: subject.cedula_profesor,
           apellidos_profesor: subject.apellidos_profesor,
           nombres_profesor: subject.nombres_profesor,
           cursos_dictados: subject.id_curso,
-          descripcion: subject.descripcion
+          descripcion: subject.descripcion,
         } || [])
     );
 
-    filteredData = dataTable.filter((subject: any) => subject.nombre.includes(filter));
+    filteredData = dataTable.filter((subject: any) =>
+      subject.nombre.includes(filter)
+    );
   }
 
   const columnTitles = [
@@ -58,10 +72,19 @@ export const DeleteSubject = () => {
   };
 
   const handleDeleteClick = async () => {
-    console.log(selectedSubject);
-    const { apiData } = await apiRequest(null, `subjects/${selectedSubject?.id}`, "delete");
-    console.log(apiData);
+    const response = await apiRequest(
+      null,
+      `subjects/${selectedSubject?.id}`,
+      "delete"
+    );
     mutate();
+
+    if (!response.error) {
+      toast.success("Materia eliminada con exito");
+    } else {
+      toast.error("Error al eliminar el materia");
+    }
+
   };
 
   return (
@@ -77,8 +100,12 @@ export const DeleteSubject = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar estudiantes</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los estudiantes.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar estudiantes
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar los estudiantes.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -93,9 +120,31 @@ export const DeleteSubject = () => {
             <DataTable columnTitles={columnTitles} data={filteredData} />
           </div>
           <div className="flex w-full justify-end">
-            <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar materia
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button disabled={!selectedSubject} variant="destructive">
+                  Borrar materia
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar el materia?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente el materia y se removerá la información de
+                    nuestros servidores
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       )}

@@ -8,6 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/viewTable";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export const DeleteStudents = () => {
   const { data, loading, mutate } = useGet("students");
@@ -39,7 +51,9 @@ export const DeleteStudents = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.nombres.toString().includes(filter));
+    filteredData = dataTable.filter((item: any) =>
+      item.nombres.toString().includes(filter)
+    );
   }
 
   const columnTitles = [
@@ -63,10 +77,19 @@ export const DeleteStudents = () => {
   };
 
   const handleDeleteClick = async () => {
-    console.log(selectedStudent);
-    const { apiData } = await apiRequest(null, `students/${selectedStudent?.identificacion}`, "delete");
-    console.log(apiData);
+    const response = await apiRequest(
+      null,
+      `students/${selectedStudent?.identificacion}`,
+      "delete"
+    );
     mutate();
+
+    if (!response.error) {
+      toast.success("Estudiante eliminado con exito");
+    } else {
+      toast.error("Error al eliminar el estudiante");
+    }
+
   };
 
   return (
@@ -82,8 +105,12 @@ export const DeleteStudents = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar estudiantes</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los estudiantes.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar estudiantes
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar los estudiantes.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -98,9 +125,31 @@ export const DeleteStudents = () => {
             <DataTable columnTitles={columnTitles} data={filteredData} />
           </div>
           <div className="flex w-full justify-end">
-            <Button onClick={handleDeleteClick} variant="destructive">
-              Borrar estudiante
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button disabled={!selectedStudent} variant="destructive">
+                  Borrar estudiante
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar el estudiante?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente el estudiante y se removerá la información
+                    de nuestros servidores
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       )}

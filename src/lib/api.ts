@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const escolaApi = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://sadieapi.onrender.com/",
+  //baseURL: "http://localhost:3000/",
   headers: {
     "Content-Type": "application/json",
   },

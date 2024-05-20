@@ -9,7 +9,15 @@ import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Sheet,
   SheetClose,
@@ -54,7 +62,6 @@ export const UpdateCourses = () => {
 
   const handleUpdateClick = async (updatedCourse: any, course: any) => {
     const data = { updatedCourse, course };
-    console.log("hola");
     const response = await apiRequest(data, "courses", "put");
     if (!response.error) {
       toast.success("Curso actualizado con exito");
@@ -76,7 +83,10 @@ export const UpdateCourses = () => {
           sheet: (
             <Sheet>
               <SheetTrigger>
-                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(course)} />
+                <RefreshCcwDot
+                  className="cursor-pointer"
+                  onClick={() => handleRefreshClick(course)}
+                />
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
@@ -86,7 +96,9 @@ export const UpdateCourses = () => {
                   <Form {...form}>
                     <form
                       className="space-y-4"
-                      onSubmit={form.handleSubmit((updatedCourse) => handleUpdateClick(updatedCourse, course))}
+                      onSubmit={form.handleSubmit((updatedCourse) =>
+                        handleUpdateClick(updatedCourse, course)
+                      )}
                     >
                       <FormField
                         control={form.control}
@@ -98,7 +110,8 @@ export const UpdateCourses = () => {
                               <Input placeholder="11-01" {...field} />
                             </FormControl>
                             <FormDescription>
-                              El ID del curso vendria a ser lo mismo que el nombre, ej: 11-01, 6-02, etc.
+                              El ID del curso vendria a ser lo mismo que el
+                              nombre, ej: 11-01, 6-02, etc.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -119,7 +132,9 @@ export const UpdateCourses = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((course: any) => course.id.includes(filter));
+    filteredData = dataTable.filter((course: any) =>
+      course.id.includes(filter)
+    );
   }
   return (
     <div>
@@ -134,8 +149,12 @@ export const UpdateCourses = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Actualizar cursos</h1>
-            <p className="text-muted-foreground">Aquí puedes actualizar los cursos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Actualizar cursos
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes actualizar los cursos.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">

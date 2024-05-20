@@ -17,6 +17,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import { useGet } from "@/hooks/useGet";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   document_type: z.string({ required_error: "Por favor seleccione un tipo de documento" }),
@@ -62,6 +63,14 @@ export const CreateStudents = () => {
       nro_documento: "",
       nombres: "",
       apellidos: "",
+      contraseña: "",
+      usuario: "",
+
+      /* No vuelve a valor por defecto después de crear
+      associated_course: "",
+      associated_parent: "",
+      document_type: "",
+      */
     },
   });
 
@@ -78,7 +87,12 @@ export const CreateStudents = () => {
     };
 
     const response = await apiRequest(studentData, "students", "post");
-    console.log(response);
+    if (!response.error) {
+      toast.success("Estudiante creado con exito");
+      form.reset();
+    } else {
+      toast.error("Error al crear el estudiante", {});
+    }
   };
 
   return (
