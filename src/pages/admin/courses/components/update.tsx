@@ -9,7 +9,15 @@ import { useGet } from "@/hooks/useGet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Sheet,
   SheetClose,
@@ -19,17 +27,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
@@ -39,7 +36,6 @@ export const UpdateCourses = () => {
   const { data, loading, mutate } = useGet("courses");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [shouldClose, setShouldClose] = useState<boolean>(false);
   const columnTitles = ["ID", "Acciones"];
   let dataTable: string[] = [];
   let filteredData: string[] = [];
@@ -66,16 +62,11 @@ export const UpdateCourses = () => {
 
   const handleUpdateClick = async (updatedCourse: any, course: any) => {
     const data = { updatedCourse, course };
-    console.log("hola");
     const response = await apiRequest(data, "courses", "put");
     if (!response.error) {
       toast.success("Curso actualizado con exito");
-      setShouldClose(true);
-      console.log("hola pase");
     } else {
       toast.error("Error al actualizar el curso");
-      setShouldClose(false);
-      console.log("hola no pase");
     }
     mutate();
   };
@@ -92,7 +83,10 @@ export const UpdateCourses = () => {
           sheet: (
             <Sheet>
               <SheetTrigger>
-                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(course)} />
+                <RefreshCcwDot
+                  className="cursor-pointer"
+                  onClick={() => handleRefreshClick(course)}
+                />
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
@@ -102,7 +96,9 @@ export const UpdateCourses = () => {
                   <Form {...form}>
                     <form
                       className="space-y-4"
-                      onSubmit={form.handleSubmit((updatedCourse) => handleUpdateClick(updatedCourse, course))}
+                      onSubmit={form.handleSubmit((updatedCourse) =>
+                        handleUpdateClick(updatedCourse, course)
+                      )}
                     >
                       <FormField
                         control={form.control}
@@ -114,33 +110,19 @@ export const UpdateCourses = () => {
                               <Input placeholder="11-01" {...field} />
                             </FormControl>
                             <FormDescription>
-                              El ID del curso vendria a ser lo mismo que el nombre, ej: 11-01, 6-02, etc.
+                              El ID del curso vendria a ser lo mismo que el
+                              nombre, ej: 11-01, 6-02, etc.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                       <SheetFooter>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button>Actualizar y finalizar</Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>¿Estás seguro de actualizar el curso?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Esta accion no puede ser revertida. Esto actualizará el curso y se removerá la
-                                información previa a la actualización de nuestros servidores
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction type="submit">Continuar</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                        <SheetClose>
+                          {/* //TODO: replicar el toast en el resto de los modales */}
+                          <Button type="submit">Actualizar y finalizar</Button>
+                        </SheetClose>
                       </SheetFooter>
-                      {shouldClose && <SheetClose />}
                     </form>
                   </Form>
                 </div>
@@ -150,7 +132,9 @@ export const UpdateCourses = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((course: any) => course.id.includes(filter));
+    filteredData = dataTable.filter((course: any) =>
+      course.id.includes(filter)
+    );
   }
   return (
     <div>
@@ -165,8 +149,12 @@ export const UpdateCourses = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Actualizar cursos</h1>
-            <p className="text-muted-foreground">Aquí puedes actualizar los cursos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Actualizar cursos
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes actualizar los cursos.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">

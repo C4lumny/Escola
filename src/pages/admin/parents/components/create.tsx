@@ -5,8 +5,17 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   cedula: z.string({ required_error: "Por favor ingrese una cédula." }),
@@ -22,7 +31,9 @@ const formSchema = z.object({
       message: "Apellidos debe tener al menos 2 caracteres.",
     })
     .max(50, { message: "Apellidos debe tener menos de 50 caracteres." }),
-  correo: z.string({ required_error: "Por favor ingrese un correo." }).email({ message: "Ingrese un correo válido." }),
+  correo: z
+    .string({ required_error: "Por favor ingrese un correo." })
+    .email({ message: "Ingrese un correo válido." }),
   telefono: z
     .string({ required_error: "Por favor ingrese un telefono. " })
     .length(10, { message: "Telefono debe tener 10 caracteres." }),
@@ -31,22 +42,36 @@ const formSchema = z.object({
 export const CreateParents = () => {
   const { apiRequest } = useRequest();
 
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await apiRequest(values, "parents", "post");
+    if (!response.error) {
+      toast.success("Acudiente creado con exito");
+      form.reset();
+    } else {
+      toast.error("Error al crear el acudiente", {});
+    }
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombres: "",
+      apellidos: "",
+      cedula: "",
+      correo: "",
+      telefono: "",
     },
   });
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await apiRequest(values, "parents", "post");
-  };
 
   return (
     <>
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Crear acudientes</h1>
-        <p className="text-muted-foreground">Aqui puedes ingresar los acudientes que desees.</p>
+        <h1 className="text-xl font-semibold tracking-tight">
+          Crear acudientes
+        </h1>
+        <p className="text-muted-foreground">
+          Aqui puedes ingresar los acudientes que desees.
+        </p>
       </div>
       <Separator className="mt-8" />
       <Form {...form}>
@@ -61,7 +86,9 @@ export const CreateParents = () => {
                 <FormControl>
                   <Input placeholder="Cedula" {...field} />
                 </FormControl>
-                <FormDescription>El numero de cedula del acudiente a ingresar.</FormDescription>
+                <FormDescription>
+                  El numero de cedula del acudiente a ingresar.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -76,7 +103,9 @@ export const CreateParents = () => {
                 <FormControl>
                   <Input placeholder="Jose" {...field} />
                 </FormControl>
-                <FormDescription>Nombres del acudiente. Ej: Jesús Carlos</FormDescription>
+                <FormDescription>
+                  Nombres del acudiente. Ej: Jesús Carlos
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -91,7 +120,9 @@ export const CreateParents = () => {
                 <FormControl>
                   <Input placeholder="Hernández Restrepo" {...field} />
                 </FormControl>
-                <FormDescription>Apellidos del acudiente. Ej: Ospino Hernández</FormDescription>
+                <FormDescription>
+                  Apellidos del acudiente. Ej: Ospino Hernández
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -106,7 +137,10 @@ export const CreateParents = () => {
                 <FormControl>
                   <Input placeholder="example@example.com" {...field} />
                 </FormControl>
-                <FormDescription>Correo electrónico del acudiente, información relevante de contacto</FormDescription>
+                <FormDescription>
+                  Correo electrónico del acudiente, información relevante de
+                  contacto
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -121,7 +155,9 @@ export const CreateParents = () => {
                 <FormControl>
                   <Input placeholder="3000000000" {...field} />
                 </FormControl>
-                <FormDescription>Teléfono del acudiente, información relevante de contacto</FormDescription>
+                <FormDescription>
+                  Teléfono del acudiente, información relevante de contacto
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

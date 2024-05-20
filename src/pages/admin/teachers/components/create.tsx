@@ -5,8 +5,17 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   cedula: z.string({ required_error: "Por favor ingrese una cédula." }),
@@ -22,7 +31,9 @@ const formSchema = z.object({
       message: "Apellidos debe tener al menos 2 caracteres.",
     })
     .max(50, { message: "Apellidos debe tener menos de 50 caracteres." }),
-  correo: z.string({ required_error: "Por favor ingrese un correo." }).email({ message: "Ingrese un correo válido." }),
+  correo: z
+    .string({ required_error: "Por favor ingrese un correo." })
+    .email({ message: "Ingrese un correo válido." }),
   telefono: z
     .string({ required_error: "Por favor ingrese un telefono. " })
     .length(10, { message: "Telefono debe tener 10 caracteres." }),
@@ -43,19 +54,34 @@ export const CreateTeachers = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombres: "",
+      apellidos: "",
+      cedula: "",
+      contraseña: "",
+      correo: "",
+      telefono: "",
+      usuario: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    await apiRequest(values, "teachers", "post");
+    const response = await apiRequest(values, "teachers", "post");
+    if (!response.error) {
+      toast.success("Profesor creado con exito");
+      form.reset();
+    } else {
+      toast.error("Error al crear el profesor", {});
+    }
   };
 
   return (
     <>
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Crear profesores</h1>
-        <p className="text-muted-foreground">Aqui puedes crear los profesores que desees para tu institución.</p>
+        <h1 className="text-xl font-semibold tracking-tight">
+          Crear profesores
+        </h1>
+        <p className="text-muted-foreground">
+          Aqui puedes crear los profesores que desees para tu institución.
+        </p>
       </div>
       <Separator className="mt-8" />
       <Form {...form}>
@@ -70,7 +96,9 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="Cedula" {...field} />
                 </FormControl>
-                <FormDescription>El numero de cedula del docente a ingresar.</FormDescription>
+                <FormDescription>
+                  El numero de cedula del docente a ingresar.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -85,7 +113,9 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="Jose" {...field} />
                 </FormControl>
-                <FormDescription>Nombres del docente. Ej: Jesús Carlos</FormDescription>
+                <FormDescription>
+                  Nombres del docente. Ej: Jesús Carlos
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -100,7 +130,9 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="Hernández Restrepo" {...field} />
                 </FormControl>
-                <FormDescription>Apellidos del docente. Ej: Ospino Hernández</FormDescription>
+                <FormDescription>
+                  Apellidos del docente. Ej: Ospino Hernández
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -115,7 +147,10 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="example@example.com" {...field} />
                 </FormControl>
-                <FormDescription>Correo electrónico del docente, información relevante de contacto</FormDescription>
+                <FormDescription>
+                  Correo electrónico del docente, información relevante de
+                  contacto
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -130,7 +165,9 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="3000000000" {...field} />
                 </FormControl>
-                <FormDescription>Teléfono del docente, información relevante de contacto</FormDescription>
+                <FormDescription>
+                  Teléfono del docente, información relevante de contacto
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -145,7 +182,9 @@ export const CreateTeachers = () => {
                 <FormControl>
                   <Input placeholder="jesus_profesor" {...field} />
                 </FormControl>
-                <FormDescription>Usuario del docente, importante para el inicio de sesión</FormDescription>
+                <FormDescription>
+                  Usuario del docente, importante para el inicio de sesión
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -158,9 +197,15 @@ export const CreateTeachers = () => {
               <FormItem>
                 <FormLabel>Contraseña</FormLabel>
                 <FormControl>
-                  <Input placeholder="**************" type="password" {...field} />
+                  <Input
+                    placeholder="**************"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>Contraseña del docente, importante para el inicio de sesión</FormDescription>
+                <FormDescription>
+                  Contraseña del docente, importante para el inicio de sesión
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

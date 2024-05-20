@@ -1,6 +1,14 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -25,10 +33,8 @@ export const CreateCourses = () => {
     if (!response.error) {
       toast.success("Curso creado con exito");
       form.reset();
-    }else {
-      toast.error("Error al crear el curso", {
-
-      });
+    } else {
+      toast.error("Error al crear el curso", {});
     }
   };
 
@@ -43,7 +49,10 @@ export const CreateCourses = () => {
     <>
       <div>
         <h1 className="text-xl font-semibold tracking-tight">Crear cursos</h1>
-        <p className="text-muted-foreground">Aqui puedes ingresar / crear los cursos que desees para tu institución.</p>
+        <p className="text-muted-foreground">
+          Aqui puedes ingresar / crear los cursos que desees para tu
+          institución.
+        </p>
       </div>
       <Separator className="mt-8" />
       <Form {...form}>
@@ -59,12 +68,14 @@ export const CreateCourses = () => {
                   <Input placeholder="11-01" {...field} />
                 </FormControl>
                 <FormDescription>
-                  El ID del curso vendria a ser lo mismo que el nombre, ej: 11-01, 6-02, etc.
+                  El ID del curso vendria a ser lo mismo que el nombre, ej:
+                  11-01, 6-02, etc.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {/* //TODO: replicar el toast en el resto de los modales */}
           <Button type="submit">Crear curso</Button>
         </form>
       </Form>

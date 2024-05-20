@@ -17,6 +17,7 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   nombre: z.string().min(2, {
@@ -35,14 +36,20 @@ export const CreateSubjects = () => {
   const coursesData = useGet("courses");
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    await apiRequest(values, "subjects", "post");
+    const response = await apiRequest(values, "subjects", "post");
+    if (!response.error) {
+      toast.success("Materia creada con exito");
+      form.reset();
+    } else {
+      toast.error("Error al crear la materia", {});
+    }
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombre: "",
+      descripcion: "",
     },
   });
 
