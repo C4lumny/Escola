@@ -29,7 +29,6 @@ export const Login = () => {
               <footer className="text-sm">John Dewey</footer>
             </blockquote>
           </div>
-          M
         </div>
         {/* Parte derecha de la pagina (Inicio de sesion) 👇 */}
         <div className="lg:p-8">

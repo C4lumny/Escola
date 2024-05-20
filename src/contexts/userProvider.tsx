@@ -3,6 +3,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 interface User {
   username: string;
   password: string;
+  identificacion: string;
 }
 
 interface UserContextData {
@@ -11,7 +12,11 @@ interface UserContextData {
 }
 
 const UserContext = createContext<UserContextData>({
-  user: { username: "", password: "" },
+  user: {
+    username: "",
+    password: "",
+    identificacion: "",
+  },
   createUser: () => {},
 });
 
@@ -24,7 +29,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<User>({ username: "", password: "" });
+  const [user, setUser] = useState<User>({ username: "", password: "", identificacion: "" });
 
   const createUser = (newUser: User) => {
     setUser(newUser);
