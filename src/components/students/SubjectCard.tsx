@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 
 export const SubjectCard = ({ subject }: { subject: any }) => {
+  let shortTitle = "";
+  if (subject && subject.nombre) {
+    shortTitle = subject.nombre.substring(0, 2);
+  }
+
   return (
     <div className="relative flex w-[16.8rem] flex-col rounded-xl bg-white dark:bg-background dark:border-slate-400 dark:border-2 bg-clip-border text-gray-700 shadow-md">
-      <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+      <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-t from-[#902582] to-blue-600">
+        <div className="text-9xl font-jetbrains font-bold mt-9 text-start leading-none tracking-tighter dark:text-white antialiased ">
+          {shortTitle}
+        </div>
+      </div>
       <div className="p-6 h-36">
         <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal dark:text-white text-blue-gray-900 antialiased">
           {subject.nombre}
