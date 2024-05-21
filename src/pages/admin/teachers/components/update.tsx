@@ -6,7 +6,6 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +30,7 @@ import {
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
 import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const UpdateCities = () => {
   const { data, loading, mutate } = useGet("teachers");
@@ -306,13 +306,7 @@ export const UpdateCities = () => {
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>

@@ -2,9 +2,9 @@ import { ChangeEvent, useState } from "react";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/viewTable";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const ViewStudents = () => {
   const { data, loading } = useGet("students");
@@ -27,7 +27,9 @@ export const ViewStudents = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) => item.nombres.toString().includes(filter));
+    filteredData = dataTable.filter((item: any) =>
+      item.nombres.toString().includes(filter)
+    );
   }
 
   const columnTitles = [
@@ -48,18 +50,16 @@ export const ViewStudents = () => {
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar estudiantes</h1>
-            <p className="text-muted-foreground">Aqui puedes ver los estudiantes activos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Visualizar estudiantes
+            </h1>
+            <p className="text-muted-foreground">
+              Aqui puedes ver los estudiantes activos.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">

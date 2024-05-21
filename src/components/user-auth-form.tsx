@@ -32,16 +32,17 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsLoading(true);
     try {
       const request = await apiRequest(credentials, "/login", "post");
-      const apiResponse = request.apiData;
+      const response = request.apiData;
+      console.log(response)
 
-      if (apiResponse.statusCode === 200) {
+      if (response.statusCode === 200) {
         setIsLoading(false);
-        createUser({ username: credentials.username, password: credentials.password });
-        if(apiResponse.data.tipo_usuario == "Administrador"){
+        createUser({ username: credentials.username, password: credentials.password, identificacion: response.data.identificacion });
+        if(response.data.tipo_usuario == "Administrador"){
           navigate("/admins/dashboard");
-        } else if(apiResponse.data.tipo_usuario == "Estudiante"){
+        } else if(response.data.tipo_usuario == "Estudiante"){
           navigate("/students/dashboard");
-        } else if(apiResponse.data.tipo_usuario == "Profesor"){
+        } else if(response.data.tipo_usuario == "Profesor"){
           navigate("/teachers/dashboard");
         }
       }

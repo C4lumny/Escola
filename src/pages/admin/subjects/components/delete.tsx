@@ -3,7 +3,6 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const DeleteSubject = () => {
   const { data, loading, mutate } = useGet("subjects");
@@ -84,27 +84,20 @@ export const DeleteSubject = () => {
     } else {
       toast.error("Error al eliminar el materia");
     }
-
   };
 
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>
             <h1 className="text-xl font-semibold tracking-tight">
-              Eliminar estudiantes
+              Eliminar materia
             </h1>
             <p className="text-muted-foreground">
-              Aquí puedes eliminar los estudiantes.
+              Aquí puedes eliminar las materias.
             </p>
           </div>
           <Separator className="my-5" />
@@ -129,11 +122,11 @@ export const DeleteSubject = () => {
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>
-                    ¿Estás seguro de borrar el materia?
+                    ¿Estás seguro de borrar la materia?
                   </AlertDialogTitle>
                   <AlertDialogDescription>
                     Esta accion no puede ser revertida. Esto borrará
-                    permanentemente el materia y se removerá la información de
+                    permanentemente la materia y se removerá la información de
                     nuestros servidores
                   </AlertDialogDescription>
                 </AlertDialogHeader>

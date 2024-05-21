@@ -3,7 +3,6 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -19,92 +18,93 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
-export interface Clientes {
-  numerodocumento: string;
-  tipodocumento: string;
-  nombres: string;
-  apellidos: string;
-  celular: string;
-  correo: string;
-  fecharegistro: Date;
-}
-
-export const DeleteCostumers = () => {
-  const { data, loading, mutate } = useGet("/FlyEaseApi/Clientes/GetAll");
+export const DeleteActivity = () => {
+  const { data, loading, mutate } = useGet("activities");
   const { apiRequest } = useRequest();
   const [filter, setFilter] = useState("");
-  const [selectedCostumer, setSelectedCostumer] = useState<Clientes>();
+  const [selectedActivity, setSelectedActivity] = useState<any>();
   let dataTable: string[] = [];
   let filteredData: string[] = [];
 
   if (!loading) {
-    dataTable = data.response.map(
-      (costumer: Clientes) =>
+    dataTable = data.data.map(
+      (activity: any) =>
         ({
           deleteCheckbox: (
             <Checkbox
-              checked={costumer.numerodocumento === selectedCostumer?.numerodocumento}
+              checked={activity === selectedActivity}
               className="w-4 h-4"
-              onCheckedChange={() => handleCheckboxChange(costumer)}
+              onCheckedChange={() => handleCheckboxChange(activity)}
             />
           ),
-          document: costumer.numerodocumento,
-          tipodocumento: costumer.tipodocumento,
-          nombre: costumer.nombres,
-          apellidos: costumer.apellidos,
-          celular: costumer.celular,
-          correo: costumer.correo,
-          fechaRegistro: new Date(costumer.fecharegistro).toLocaleString(),
+          id: activity.id,
+          titulo: activity.titulo,
+          descripcion: activity.descripcion,
+          fecha_inicio: new Date(activity.fecha_inicio).toLocaleDateString(),
+          fecha_fin: new Date(activity.fecha_fin).toLocaleDateString(),
+          nombre_asignatura: activity.nombre_asignatura,
         } || [])
     );
 
-    filteredData = dataTable.filter((costumer: any) => costumer.nombre.toLowerCase().includes(filter.toLowerCase()));
+    filteredData = dataTable.filter((activity: any) =>
+      activity.titulo.toString().includes(filter)
+    );
   }
 
   const columnTitles = [
-    "Documento",
-    "Tipo de documento",
-    "Nombres",
-    "Apellidos",
-    "Celular",
-    "Correo",
-    "Fecha de registro",
+    "",
+    "ID",
+    "Titulo",
+    "Descripcion",
+    "Fecha inicio",
+    "Fecha fin",
+    "Nombre de la asignatura",
   ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
   };
 
-  const handleCheckboxChange = (costumer: Clientes) => {
-    setSelectedCostumer(costumer);
+  const handleCheckboxChange = (activity: any) => {
+    setSelectedActivity(activity);
   };
 
   const handleDeleteClick = async () => {
-    await apiRequest(null, `/FlyEaseApi/Clientes/Delete/${selectedCostumer?.numerodocumento}`, "delete");
+    const response = await apiRequest(
+      null,
+      `activities/${selectedActivity?.id}`,
+      "delete"
+    );
     mutate();
+
+    if (!response.error) {
+      toast.success("Actividad eliminada con exito");
+    } else {
+      toast.error("Error al eliminar la actividad");
+    }
   };
 
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar clientes</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los clientes.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar actividades
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar las actividades.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
             <Input
-              placeholder="Filtrar por nombre del avion..."
+              placeholder="Filtrar por titulo..."
               className="max-w-sm"
               value={filter}
               onChange={handleFilterChange}
@@ -115,19 +115,27 @@ export const DeleteCostumers = () => {
           </div>
           <div className="flex w-full justify-end">
             <AlertDialog>
-              <AlertDialogTrigger>
-                <Button variant="destructive">Borrar asiento</Button>
+              <AlertDialogTrigger asChild>
+                <Button disabled={!selectedActivity} variant="destructive">
+                  Borrar actividad
+                </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>¿Seguro que quieres borrar el asiento?</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar la actividad?
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Ten en cuenta que se eliminará el ultimo asiento del avión seleccionado!
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente la actividad y se removerá la información de
+                    nuestros servidores
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteClick}>Eliminar</AlertDialogAction>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

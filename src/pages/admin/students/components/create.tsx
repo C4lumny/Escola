@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { useGet } from "@/hooks/useGet";
 import { toast } from "sonner";
+import { FormSkeleton } from "@/components/form-skeleton";
 
 const formSchema = z.object({
   document_type: z.string({ required_error: "Por favor seleccione un tipo de documento" }),
@@ -66,7 +67,7 @@ export const CreateStudents = () => {
       contraseña: "",
       usuario: "",
 
-      /* No vuelve a valor por defecto después de crear
+      /* No vuelve al valor por defecto después de crear
       associated_course: "",
       associated_parent: "",
       document_type: "",
@@ -98,7 +99,7 @@ export const CreateStudents = () => {
   return (
     <>
       {coursesData.loading ? (
-        <div>Cargando cursos...</div>
+        <FormSkeleton />
       ) : (
         <>
           <div>
@@ -141,11 +142,11 @@ export const CreateStudents = () => {
                 name="nro_documento"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Numero de documento</FormLabel>
+                    <FormLabel>Número de documento</FormLabel>
                     <FormControl>
                       <Input placeholder="10XXXXXXXX" {...field} />
                     </FormControl>
-                    <FormDescription>El numero de documento del estudiante a ingresar.</FormDescription>
+                    <FormDescription>El número de documento del estudiante a ingresar.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

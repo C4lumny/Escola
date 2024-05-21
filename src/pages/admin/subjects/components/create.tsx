@@ -1,13 +1,20 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRequest } from "@/hooks/useApiRequest";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -18,6 +25,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { FormSkeleton } from "@/components/form-skeleton";
 
 const formSchema = z.object({
   nombre: z.string().min(2, {
@@ -56,19 +64,16 @@ export const CreateSubjects = () => {
   return (
     <>
       {teachersData.loading || coursesData.loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <FormSkeleton />
       ) : (
         <>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Crear materias</h1>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Crear materias
+            </h1>
             <p className="text-muted-foreground">
-              Aqui puedes ingresar / crear las materias que desees para tu institución.
+              Aqui puedes ingresar / crear las materias que desees para tu
+              institución.
             </p>
           </div>
           <Separator className="mt-8" />
@@ -85,7 +90,8 @@ export const CreateSubjects = () => {
                       <Input placeholder="Química Orgánica" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Ingrese el nombre completo de la asignatura, por ejemplo, 'Química Orgánica'
+                      Ingrese el nombre completo de la asignatura, por ejemplo,
+                      'Química Orgánica'
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -99,11 +105,15 @@ export const CreateSubjects = () => {
                   <FormItem>
                     <FormLabel>Descripcion de la asignatura</FormLabel>
                     <FormControl>
-                      <Input placeholder="Fundamentales de la física cuántica" {...field} />
+                      <Input
+                        placeholder="Fundamentales de la física cuántica"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
-                      Proporcione una descripción detallada de la asignatura, por ejemplo, 'Este curso aborda los
-                      principios fundamentales de la física cuántica
+                      Proporcione una descripción detallada de la asignatura,
+                      por ejemplo, 'Este curso aborda los principios
+                      fundamentales de la física cuántica
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -115,8 +125,13 @@ export const CreateSubjects = () => {
                 name="associated_course"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Curso en los cuales la asignatura será dictada</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormLabel>
+                      Curso en los cuales la asignatura será dictada
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-[280px]">
                           <SelectValue placeholder="Seleccione un curso" />
@@ -139,7 +154,10 @@ export const CreateSubjects = () => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <FormDescription>Seleccione el nombre del curso que se ha asignado a esta materia</FormDescription>
+                    <FormDescription>
+                      Seleccione el nombre del curso que se ha asignado a esta
+                      materia
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -151,7 +169,10 @@ export const CreateSubjects = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Profesor que enseñará la asignatura</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-[280px]">
                           <SelectValue placeholder="Seleccione un profesor" />
@@ -163,8 +184,12 @@ export const CreateSubjects = () => {
                           {teachersData.data.data.length > 0 ? (
                             teachersData.data.data.map((teacher: any) => {
                               return (
-                                <SelectItem key={teacher.cedula} value={teacher.cedula}>
-                                  {teacher.cedula} - {teacher.nombres} {teacher.apellidos}
+                                <SelectItem
+                                  key={teacher.cedula}
+                                  value={teacher.cedula}
+                                >
+                                  {teacher.cedula} - {teacher.nombres}{" "}
+                                  {teacher.apellidos}
                                 </SelectItem>
                               );
                             })
@@ -176,7 +201,8 @@ export const CreateSubjects = () => {
                     </Select>
 
                     <FormDescription>
-                      Seleccione el nombre del profesor asignado a esta materia. Ejemplo: 'Juan Pérez'.
+                      Seleccione el nombre del profesor asignado a esta materia.
+                      Ejemplo: 'Juan Pérez'.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

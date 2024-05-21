@@ -6,10 +6,17 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Sheet,
   SheetClose,
@@ -32,6 +39,7 @@ import {
 import { RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
 import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const UpdateSubject = () => {
   const { data, loading, mutate } = useGet("subjects");
@@ -104,7 +112,10 @@ export const UpdateSubject = () => {
           sheet: (
             <Sheet>
               <SheetTrigger>
-                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(subject)} />
+                <RefreshCcwDot
+                  className="cursor-pointer"
+                  onClick={() => handleRefreshClick(subject)}
+                />
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
@@ -114,7 +125,9 @@ export const UpdateSubject = () => {
                   <Form {...form}>
                     <form
                       className="space-y-4"
-                      onSubmit={form.handleSubmit((updatedCountry) => handleUpdateClick(updatedCountry, subject))}
+                      onSubmit={form.handleSubmit((updatedCountry) =>
+                        handleUpdateClick(updatedCountry, subject)
+                      )}
                     >
                       <FormField
                         control={form.control}
@@ -123,10 +136,14 @@ export const UpdateSubject = () => {
                           <FormItem>
                             <FormLabel>Nombre de la asignatura</FormLabel>
                             <FormControl>
-                              <Input placeholder="Química Orgánica" {...field} />
+                              <Input
+                                placeholder="Química Orgánica"
+                                {...field}
+                              />
                             </FormControl>
                             <FormDescription>
-                              Ingrese el nombre completo de la asignatura, por ejemplo, 'Química Orgánica'
+                              Ingrese el nombre completo de la asignatura, por
+                              ejemplo, 'Química Orgánica'
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -140,11 +157,15 @@ export const UpdateSubject = () => {
                           <FormItem>
                             <FormLabel>Descripcion de la asignatura</FormLabel>
                             <FormControl>
-                              <Input placeholder="Fundamentales de la física cuántica" {...field} />
+                              <Input
+                                placeholder="Fundamentales de la física cuántica"
+                                {...field}
+                              />
                             </FormControl>
                             <FormDescription>
-                              Proporcione una descripción detallada de la asignatura, por ejemplo, 'Este curso aborda
-                              los principios fundamentales de la física cuántica
+                              Proporcione una descripción detallada de la
+                              asignatura, por ejemplo, 'Este curso aborda los
+                              principios fundamentales de la física cuántica
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -156,8 +177,13 @@ export const UpdateSubject = () => {
                         name="associated_course"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Curso en los cuales la asignatura será dictada</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormLabel>
+                              Curso en los cuales la asignatura será dictada
+                            </FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger className="w-[280px]">
                                   <SelectValue placeholder="Seleccione un curso" />
@@ -169,7 +195,10 @@ export const UpdateSubject = () => {
                                   {coursesData.data.data.length > 0 ? (
                                     coursesData.data.data.map((course: any) => {
                                       return (
-                                        <SelectItem key={course.id} value={course.id}>
+                                        <SelectItem
+                                          key={course.id}
+                                          value={course.id}
+                                        >
                                           {course.id}
                                         </SelectItem>
                                       );
@@ -181,7 +210,8 @@ export const UpdateSubject = () => {
                               </SelectContent>
                             </Select>
                             <FormDescription>
-                              Seleccione el nombre del curso que se ha asignado a esta materia
+                              Seleccione el nombre del curso que se ha asignado
+                              a esta materia
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -193,8 +223,13 @@ export const UpdateSubject = () => {
                         name="associated_teacher"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Profesor que enseñará la asignatura</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormLabel>
+                              Profesor que enseñará la asignatura
+                            </FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger className="w-[280px]">
                                   <SelectValue placeholder="Seleccione un profesor" />
@@ -204,13 +239,19 @@ export const UpdateSubject = () => {
                                 <SelectGroup>
                                   <SelectLabel>Profesores</SelectLabel>
                                   {teachersData.data.data.length > 0 ? (
-                                    teachersData.data.data.map((teacher: any) => {
-                                      return (
-                                        <SelectItem key={teacher.cedula} value={teacher.cedula}>
-                                          {teacher.cedula} - {teacher.nombres} {teacher.apellidos}
-                                        </SelectItem>
-                                      );
-                                    })
+                                    teachersData.data.data.map(
+                                      (teacher: any) => {
+                                        return (
+                                          <SelectItem
+                                            key={teacher.cedula}
+                                            value={teacher.cedula}
+                                          >
+                                            {teacher.cedula} - {teacher.nombres}{" "}
+                                            {teacher.apellidos}
+                                          </SelectItem>
+                                        );
+                                      }
+                                    )
                                   ) : (
                                     <div>No hay profesores activos</div>
                                   )}
@@ -219,7 +260,8 @@ export const UpdateSubject = () => {
                             </Select>
 
                             <FormDescription>
-                              Seleccione el nombre del profesor asignado a esta materia. Ejemplo: 'Juan Pérez'.
+                              Seleccione el nombre del profesor asignado a esta
+                              materia. Ejemplo: 'Juan Pérez'.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -239,27 +281,32 @@ export const UpdateSubject = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((subject: any) => subject.nombre.includes(filter));
+    filteredData = dataTable.filter((subject: any) =>
+      subject.nombre.includes(filter)
+    );
   }
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Actualizar materias</h1>
-            <p className="text-muted-foreground">Aquí puedes actualizar las materias.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Actualizar materias
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes actualizar las materias.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
-            <Input placeholder="Filtrar por nombre..." className="max-w-sm" value={filter} onChange={handleFilterChange} />
+            <Input
+              placeholder="Filtrar por nombre..."
+              className="max-w-sm"
+              value={filter}
+              onChange={handleFilterChange}
+            />
           </div>
           <div className="rounded-md border">
             <DataTable columnTitles={columnTitles} data={filteredData} />

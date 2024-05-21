@@ -15,6 +15,7 @@ import { SubjectsPage } from "./subjects/page";
 import { CoursesPage } from "@/pages/admin/courses/page.tsx";
 import { TeachersPage } from "./teachers/page";
 import { ParentsPage } from "./parents/page";
+import { ActivitiesPage } from "./activities/page";
 
 export const Home = () => {
   const location = useLocation();
@@ -116,7 +117,7 @@ export const Home = () => {
           <Route path="courses/*" element={<CoursesPage />} />
           <Route path="teachers/*" element={<TeachersPage />} />
           <Route path="parents/*" element={<ParentsPage />} />
-          {/* <Route path="activities/*" element={<CostumersPage />} /> */}
+          <Route path="activities/*" element={<ActivitiesPage />} />
         </Routes>
       </div>
     </div>

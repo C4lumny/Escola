@@ -3,7 +3,6 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const DeleteTeacher = () => {
   const { data, loading, mutate } = useGet("teachers");
@@ -71,7 +71,11 @@ export const DeleteTeacher = () => {
   };
 
   const handleDeleteClick = async () => {
-    const response = await apiRequest(null, `teachers/${selectedTeacher?.cedula}`, "delete");
+    const response = await apiRequest(
+      null,
+      `teachers/${selectedTeacher?.cedula}`,
+      "delete"
+    );
     mutate();
 
     if (!response.error) {
@@ -79,7 +83,6 @@ export const DeleteTeacher = () => {
     } else {
       toast.error("Error al eliminar el profesor");
     }
-
   };
 
   //TODO: implementar un toaster (se encuentra en shadcn-ui) para mostrar un mensaje de exito o error al eliminar una region, y actualizar la tabla de regiones despues de eliminar una region
@@ -87,13 +90,7 @@ export const DeleteTeacher = () => {
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>
