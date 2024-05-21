@@ -2,6 +2,7 @@ import { useGet } from "@/hooks/useGet";
 import { useUserContext } from "@/contexts/userProvider";
 // UI imports
 import { Navbar } from "@/components/students/Header";
+import { Footer } from "@/components/footer";
 import { SubjectCard } from "@/components/students/SubjectCard";
 import { Separator } from "@/components/ui/separator";
 import { Loader } from "@/components/students/Loader";
@@ -10,24 +11,24 @@ export const Student = () => {
   const { user } = useUserContext();
   const { data: studentData, loading: studentLoading } = useGet(`students/${user?.identificacion}`);
   const { data: subjectData, loading: subjectLoading } = useGet(`subjects/${user?.identificacion}`);
+  const { data: activitiesData, loading: activitiesLoading } = useGet(`activities/${user?.identificacion}`);
 
   if (subjectLoading) {
     console.log("cargando...");
   } else {
-    console.log(subjectData);
-    console.log(studentData);
+    console.log(activitiesData.data);
   }
 
   return (
     <>
-      {studentLoading && subjectLoading ? (
+      {studentLoading && subjectLoading && activitiesLoading ? (
         <div className="h-screen flex items-center justify-center">
           <Loader />
         </div>
       ) : (
         <>
           <Navbar />
-          <div className="mt-20 mb-10 container h-screen grid grid-cols-3">
+          <div className="mt-20 mb-14 container h-full grid grid-cols-3">
             {/* 👇 subjects side */}
             <div className="col-span-2">
               {/* Mensaje de bienvenida */}
@@ -54,10 +55,22 @@ export const Student = () => {
               <div className="flex flex-col p-10">
                 <p className="font-semibold text-2xl">Actividades pendientes</p>
                 <Separator className="my-5" />
-
+                <div className="flex flex-col gap-5">
+                  {activitiesData && activitiesData.data.length > 0 ? (
+                    activitiesData.data.map((activity: any) => (
+                      <div key={activity.id} className="flex flex-col gap-2">
+                        <span className="text-lg">{activity.nombre}</span>
+                        <span className="text-sm">{activity.descripcion}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div>No hay actividades pendientes</div>
+                  )}
+                </div>
               </div>
             </aside>
           </div>
+          <Footer />
         </>
       )}
     </>
