@@ -3,7 +3,8 @@ import { useLocation } from "react-router-dom";
 import { useUserContext } from "@/contexts/userProvider";
 import { useEffect } from "react";
 // 👇UI Imports and icons
-import EscolaIcon from "@/assets/escola-high-resolution-logo-white-transparent.png";
+import EscolaIconDark from "@/assets/escola-high-resolution-logo-white-transparent.png";
+import EscolaIconLight from "@/assets/escola-high-resolution-logo-black-transparent.png";
 import { PersonStanding, Book, Briefcase, GraduationCap, LayoutDashboard, Pen, LogOutIcon, Users } from "lucide-react";
 import { DashboardPage } from "@/pages/admin/dashboard/page";
 import { Separator } from "@/components/ui/separator";
@@ -16,12 +17,16 @@ import { CoursesPage } from "@/pages/admin/courses/page.tsx";
 import { TeachersPage } from "./teachers/page";
 import { ParentsPage } from "./parents/page";
 import { ActivitiesPage } from "./activities/page";
+import { useTheme } from "@/components/theme-provider";
 
 export const Home = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const { user } = useUserContext();
   const navigate = useNavigate();
+  const { theme } = useTheme();
+
+  const imageSrc = theme === 'dark' ? EscolaIconDark : EscolaIconLight;
 
   const handleChange = () => {
     localStorage.clear();
@@ -42,7 +47,7 @@ export const Home = () => {
       <div className="h-screen w-64 fixed left-0 col-span-1 flex flex-col">
         {/* 👇 Logo del aplicativo */}
         <div className="mt-10 flex flex-col items-center">
-          <img src={EscolaIcon} alt="" className="w-26 h-16" />
+          <img src={imageSrc} alt="" className="w-26 h-16" />
           <div className="flex justify-center items-center">
             <span className="text-lg font-bold tracking-tight">Bienvenido, {user.username}</span>
           </div>

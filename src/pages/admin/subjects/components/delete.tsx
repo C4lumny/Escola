@@ -55,6 +55,7 @@ export const DeleteSubject = () => {
   }
 
   const columnTitles = [
+    "",
     "Nombre",
     "Cedula profesor",
     "Apellidos profesor",

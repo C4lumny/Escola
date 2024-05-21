@@ -52,7 +52,7 @@ export const DeleteActivity = () => {
     filteredData = dataTable.filter((activity: any) => activity.titulo.toString().includes(filter));
   }
 
-  const columnTitles = ["", "ID", "Titulo", "Descripcion", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = ["", "ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);

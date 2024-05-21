@@ -67,7 +67,7 @@ export const UpdateActivity = () => {
   const [filter, setFilter] = useState("");
   const { apiRequest } = useRequest();
   const today = startOfToday();
-  const columnTitles = ["ID", "Titulo", "Descripcion", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = ["ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
 
   let dataTable: string[] = [];
   let filteredData: string[] = [];
