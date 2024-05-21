@@ -3,7 +3,6 @@ import { useRequest } from "@/hooks/useApiRequest";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const DeleteActivity = () => {
   const { data, loading, mutate } = useGet("activities");
@@ -49,10 +49,20 @@ export const DeleteActivity = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((activity: any) => activity.titulo.toString().includes(filter));
+    filteredData = dataTable.filter((activity: any) =>
+      activity.titulo.toString().includes(filter)
+    );
   }
 
-  const columnTitles = ["", "ID", "Titulo", "Descripcion", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = [
+    "",
+    "ID",
+    "Titulo",
+    "Descripcion",
+    "Fecha inicio",
+    "Fecha fin",
+    "Nombre de la asignatura",
+  ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
@@ -63,7 +73,11 @@ export const DeleteActivity = () => {
   };
 
   const handleDeleteClick = async () => {
-    const response = await apiRequest(null, `activities/${selectedActivity?.id}`, "delete");
+    const response = await apiRequest(
+      null,
+      `activities/${selectedActivity?.id}`,
+      "delete"
+    );
     mutate();
 
     if (!response.error) {
@@ -76,18 +90,16 @@ export const DeleteActivity = () => {
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar actividades</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar las actividades.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar actividades
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar las actividades.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -110,15 +122,20 @@ export const DeleteActivity = () => {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>¿Estás seguro de borrar la actividad?</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar la actividad?
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Esta accion no puede ser revertida. Esto borrará permanentemente la actividad y se removerá la
-                    información de nuestros servidores
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente la actividad y se removerá la información de
+                    nuestros servidores
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteClick}>Continuar</AlertDialogAction>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

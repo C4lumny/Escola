@@ -7,7 +7,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const DeleteCourse = () => {
   const { data, loading, mutate } = useGet("courses");
@@ -37,7 +45,11 @@ export const DeleteCourse = () => {
   };
 
   const handleDeleteClick = async () => {
-    const response = await apiRequest(null, `courses/${selectedCourse?.id}`, "delete");
+    const response = await apiRequest(
+      null,
+      `courses/${selectedCourse?.id}`,
+      "delete"
+    );
     mutate();
 
     if (!response.error) {
@@ -48,24 +60,24 @@ export const DeleteCourse = () => {
   };
 
   if (data && data.data) {
-    filteredData = data.data.filter((course: any) => course.id.includes(filter));
+    filteredData = data.data.filter((course: any) =>
+      course.id.includes(filter)
+    );
   }
 
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Eliminar cursos</h1>
-            <p className="text-muted-foreground">Aquí puedes eliminar los cursos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Eliminar cursos
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí puedes eliminar los cursos.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
@@ -115,15 +127,20 @@ export const DeleteCourse = () => {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>¿Estás seguro de borrar el curso?</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    ¿Estás seguro de borrar el curso?
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Esta accion no puede ser revertida. Esto borrará permanentemente el curso y se removerá la
-                    información de nuestros servidores
+                    Esta accion no puede ser revertida. Esto borrará
+                    permanentemente el curso y se removerá la información de
+                    nuestros servidores
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteClick}>Continuar</AlertDialogAction>
+                  <AlertDialogAction onClick={handleDeleteClick}>
+                    Continuar
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
