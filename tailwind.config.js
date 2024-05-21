@@ -11,6 +11,9 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      'jetbrains': ['JetBrains Mono'],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

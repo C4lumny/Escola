@@ -208,7 +208,7 @@ export const CreateSubjects = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Crear materia</Button>
             </form>
           </Form>
         </>
