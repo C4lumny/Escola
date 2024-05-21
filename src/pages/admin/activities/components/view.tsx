@@ -2,9 +2,9 @@ import { ChangeEvent, useState } from "react";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/viewTable";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const ViewActivities = () => {
   const { data, loading } = useGet("activities");
@@ -22,10 +22,19 @@ export const ViewActivities = () => {
       nombre_asignatura: activity.nombre_asignatura,
     }));
 
-    filteredData = dataTable.filter((activity: any) => activity.titulo.toLowerCase().includes(filter.toLowerCase()));
+    filteredData = dataTable.filter((activity: any) =>
+      activity.titulo.toLowerCase().includes(filter.toLowerCase())
+    );
   }
 
-  const columnTitles = ["ID", "Titulo", "Descripcion", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = [
+    "ID",
+    "Titulo",
+    "Descripcion",
+    "Fecha inicio",
+    "Fecha fin",
+    "Nombre de la asignatura",
+  ];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);
@@ -34,18 +43,16 @@ export const ViewActivities = () => {
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar actividades</h1>
-            <p className="text-muted-foreground">Aqui puedes ver las actividades.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Visualizar actividades
+            </h1>
+            <p className="text-muted-foreground">
+              Aqui puedes ver las actividades.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">

@@ -2,9 +2,9 @@ import { ChangeEvent, useState } from "react";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/viewTable";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 export const ViewTeachers = () => {
   const { data, loading } = useGet("teachers");
@@ -24,7 +24,9 @@ export const ViewTeachers = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((teacher: any) => teacher.cedula.toString().includes(filter));
+    filteredData = dataTable.filter((teacher: any) =>
+      teacher.cedula.toString().includes(filter)
+    );
   }
 
   const columnTitles = ["Cedula", "Nombres", "Apellidos", "Telefono", "Correo"];
@@ -36,22 +38,25 @@ export const ViewTeachers = () => {
   return (
     <div>
       {loading ? (
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-12 w-12 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        </div>
+        <TableSkeleton />
       ) : (
         <div>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Visualizar profesores</h1>
-            <p className="text-muted-foreground">Aqui puedes ver los profesores activos.</p>
+            <h1 className="text-xl font-semibold tracking-tight">
+              Visualizar profesores
+            </h1>
+            <p className="text-muted-foreground">
+              Aqui puedes ver los profesores activos.
+            </p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">
-            <Input placeholder="Filtrar por id..." className="max-w-sm" value={filter} onChange={handleFilterChange} />
+            <Input
+              placeholder="Filtrar por id..."
+              className="max-w-sm"
+              value={filter}
+              onChange={handleFilterChange}
+            />
           </div>
           <div className="rounded-md border">
             <DataTable data={filteredData} columnTitles={columnTitles} />
