@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const SubjectCard = ({ subject }: { subject: any }) => {
+  const navigate = useNavigate();
+
+
   let shortTitle = "";
   if (subject && subject.nombre) {
     shortTitle = subject.nombre.substring(0, 2);
   }
+
+  const handleClick = () => {
+    navigate(`/students/${subject.nombre}`)
+  };
 
   return (
     <div className="relative flex w-[16.8rem] flex-col rounded-xl bg-white dark:bg-background dark:border-slate-400 dark:border-2 bg-clip-border text-gray-700 shadow-md">
@@ -24,6 +32,7 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
       <div className="p-6 pt-0">
         <Link to={`/students/${subject.nombre}`}>
           <button
+            onClick={handleClick}
             data-ripple-light="true"
             type="button"
             className="select-none rounded-lg bg-blue-500 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
