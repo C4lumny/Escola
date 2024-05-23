@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useSubjectContext } from "@/contexts/subjectProvider";
 
 export const SubjectCard = ({ subject }: { subject: any }) => {
   const navigate = useNavigate();
+  const { createSubject } = useSubjectContext();
 
 
   let shortTitle = "";
@@ -12,6 +14,7 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
 
   const handleClick = () => {
     navigate(`/students/${subject.nombre}`)
+    createSubject(subject);
   };
 
   return (

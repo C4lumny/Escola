@@ -1,16 +1,27 @@
-export const ActivitiesCard = ({activity}:any) => {
+import { ArrowRight } from "lucide-react";
+import ActivityIcon from "../../assets/activity.png";
+import { Link } from "react-router-dom";
+
+export const ActivitiesCard = ({ activity }: any) => {
+  console.log(activity);
   return (
-    <div className="w-full h-20 border-">
-        <div className="flex items-center justify-between w-full h-full px-5">
-            <div className="flex items-center space-x-3">
-            <span className="text-lg font-bold">{activity.title}</span>
-            <span className="text-sm text-muted-foreground">{activity.date}</span>
-            </div>
-            <div className="flex items-center space-x-3">
-            <span className="text-sm text-muted-foreground">{activity.time}</span>
-            <span className="text-sm text-muted-foreground">{activity.subject}</span>
-            </div>
+    <div className="w-full h-24 border">
+      <div className="flex space-x-4">
+        <div className="space-x-1 h-24 w-28 overflow-hidden ">
+          <img className="h-24 w-full object-fill" src={ActivityIcon} alt={activity.titulo} />
         </div>
+        <div className="w-full flex justify-between">
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold">{activity.titulo}</span>
+            <span className="text-sm text-muted-foreground">Fecha de vencimiento: {activity.fecha_fin}</span>
+          </div>
+          <div className="flex justify-end items-center mr-5 w-28 h-full">
+            <Link to={`${activity.titulo}`}>
+              <ArrowRight size={50} />
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
