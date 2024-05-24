@@ -5,7 +5,6 @@ import { useSubjectContext } from "@/contexts/subjectProvider";
 
 export const SubjectActivities = () => {
   const { subject } = useSubjectContext();
-  console.log(subject);
 
   const activities = useGet(`activities/subjects/${subject.id}`);
   

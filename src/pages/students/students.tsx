@@ -14,9 +14,8 @@ export const Student = () => {
   const { user } = useUserContext();
   const { data: studentData, loading: studentLoading } = useGet(`students/${user?.identificacion}`);
   const { data: subjectData, loading: subjectLoading } = useGet(`subjects/${user?.identificacion}`);
-  const { data: activitiesData, loading: activitiesLoading } = useGet(`activities/${user?.identificacion}`);
-
-  if (!activitiesLoading) console.log(activitiesData.data);
+  const { data: activitiesData, loading: activitiesLoading } = useGet(`activities/students/${user?.identificacion}`);
+  
   return (
     <>
       {studentLoading && subjectLoading && activitiesLoading ? (
@@ -24,7 +23,7 @@ export const Student = () => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen w-full">
           <Header />
           <div className="mt-20 mb-14 container h-full grid grid-cols-3 flex-1">
             <SubjectProvider>
