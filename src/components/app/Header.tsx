@@ -2,7 +2,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/compon
 import { buttonVariants } from "@/components/ui/button";
 //Assets
 import { Icons } from "@/components/ui/icons";
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "../app/mode-toggle";
 import { LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 

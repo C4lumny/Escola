@@ -3,8 +3,8 @@ import { ChangeEvent, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
 import { Input } from "@/components/ui/input";
-import { DataTable } from "@/components/viewTable";
-import { TableSkeleton } from "@/components/table-skeleton";
+import { DataTable } from "@/components/app/viewTable";
+import { TableSkeleton } from "@/components/app/table-skeleton";
 
 export const ViewCourses = () => {
   const { data, loading } = useGet("courses");

@@ -1,17 +1,22 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Icons } from "@/components/ui/icons";
+import { Calendar } from "@/components/ui/calendar";
 
 import { useGet } from "@/hooks/useGet";
+import { AverageGrades } from "./components/averageGrades";
+import { useState } from "react";
 
 export const DashboardPage = () => {
-  const { data, loading, mutate } = useGet("/statistics");
+  const { data, loading } = useGet("/statistics");
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   if (data) console.log(data);
-  return (
+  return loading ? (
+    <div>Cargando</div>
+  ) : (
     <>
       <div className="hidden flex-col md:flex">
-        <div className="flex-1 space-y-4 mt-10 p-8 pt-6">
+        <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-10">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           </div>
@@ -112,16 +117,16 @@ export const DashboardPage = () => {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Overview</CardTitle>
+                    <CardTitle>Promedio de notas</CardTitle>
                   </CardHeader>
-                  <CardContent className="pl-2">{/* <Overview /> */}</CardContent>
+                  <CardContent className="pl-2">
+                    <AverageGrades averageGrades={data.data.notas} />
+                  </CardContent>
                 </Card>
                 <Card className="col-span-3">
-                  <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
-                    <CardDescription>You made 265 sales this month.</CardDescription>
-                  </CardHeader>
-                  <CardContent>{/* <RecentSales /> */}</CardContent>
+                  <CardContent className="w-full h-full flex justify-center items-center">
+                    <Calendar mode="single" selected={date} onSelect={setDate} className="shadow" />
+                  </CardContent>
                 </Card>
               </div>
             </TabsContent>

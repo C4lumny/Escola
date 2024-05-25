@@ -9,15 +9,15 @@ import { PersonStanding, Book, Briefcase, GraduationCap, LayoutDashboard, Pen, L
 import { DashboardPage } from "@/pages/admin/dashboard/page";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Nav } from "@/components/nav";
-import { ModeToggle } from "@/components/mode-toggle";
+import { Nav } from "@/components/app/nav";
+import { ModeToggle } from "@/components/app/mode-toggle";
 import { StudentsPage } from "./students/page";
 import { SubjectsPage } from "./subjects/page";
 import { CoursesPage } from "@/pages/admin/courses/page.tsx";
 import { TeachersPage } from "./teachers/page";
 import { ParentsPage } from "./parents/page";
 import { ActivitiesPage } from "./activities/page";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "@/components/app/theme-provider";
 
 export const Home = () => {
   const location = useLocation();

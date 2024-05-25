@@ -2,7 +2,7 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Minus, Plus, RefreshCcw, View } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Nav } from "@/components/nav";
+import { Nav } from "@/components/app/nav";
 import { ViewActivities } from "./components/view";
 import { DeleteActivity } from "./components/delete";
 import { UpdateActivity } from "./components/update";

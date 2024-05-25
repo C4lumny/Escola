@@ -6,7 +6,7 @@ import { useGet } from "@/hooks/useGet";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/viewTable";
+import { DataTable } from "@/components/app/viewTable";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +19,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { TableSkeleton } from "@/components/table-skeleton";
+import { TableSkeleton } from "@/components/app/table-skeleton";
 
 export const DeleteActivity = () => {
   const { data, loading, mutate } = useGet("activities");

@@ -42,6 +42,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           navigate("/admins/dashboard");
         } else if(response.data.tipo_usuario == "Estudiante"){
           navigate("/students");
+        } else if(response.data.tipo_usuario == "Profesor"){
+          navigate("/teachers");
         }
       }
     } catch (error) {
