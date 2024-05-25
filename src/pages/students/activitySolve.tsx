@@ -1,6 +1,6 @@
 import { useGet } from "@/hooks/useGet";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useRequest } from "@/hooks/useApiRequest";
 import { useUserContext } from "@/contexts/userProvider";
 import { useEffect, useState } from "react";
+import { ArrowLeftCircle } from "lucide-react";
 
 const FormSchema = z.object({
   response: z
@@ -27,13 +28,15 @@ const FormSchema = z.object({
 export const ActivitySolved = () => {
   const { activity } = useParams();
   const { apiRequest } = useRequest();
+  const navigate = useNavigate();
   const { user } = useUserContext();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { data: activitiesData, loading: activitiesLoading } = useGet(`activities/${activity}`);
-  const { data: developmentData, loading: developmentLoading } = useGet(`developments/activity/${activity}`);
+  const { data: developmentData, loading: developmentLoading, mutate } = useGet(`developments/activity/${activity}`);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: { response: "" },
   });
 
   if (!(developmentLoading && activitiesLoading)) console.log(developmentData, activitiesData);
@@ -52,6 +55,8 @@ export const ActivitySolved = () => {
     if (apiData.statusCode == 200) {
       toast.success(`Entrega realizada con exito: ${formData.response}`);
       form.reset();
+      setIsEditing(false);
+      mutate();
     } else {
       toast.error(`Error al realizar la entrega: ${apiData.message}`);
     }
@@ -72,6 +77,8 @@ export const ActivitySolved = () => {
         </div>
       ) : (
         <div className="w-full grid-cols-3">
+          <ArrowLeftCircle className="cursor-pointer size-10" onClick={() => navigate(-1)} />
+          <br />
           {/* Mensaje de bienvenida */}
           <span className="font-bold text-4xl">
             {activitiesData.data[0].titulo}
@@ -83,6 +90,10 @@ export const ActivitySolved = () => {
               {new Date(activitiesData.data[0].fecha_fin).toLocaleDateString()}
             </span>
           </span>
+          <div className="mt-3">
+            Calificación:{" "}
+            <span className="text-muted-foreground">{activitiesData.data[0].observacion ? activitiesData.data[0].observacion : "Sin calificar"}</span>
+          </div>
           <Separator className="mt-5 " />
           {developmentData.data.length > 0 ? (
             <div className="flex flex-col gap-2">
@@ -109,15 +120,14 @@ export const ActivitySolved = () => {
                         </FormItem>
                       )}
                     />
-                    {isEditing ? (
-                      <Button type="submit">Realizar entrega</Button>
-                    ) : (
-                      <Button onClick={() => setIsEditing(true)}>
-                        Editar entrega
-                      </Button>
-                    )}
+                    <Button className={isEditing ? "" : "hidden"} type="submit">
+                      Realizar entrega
+                    </Button>
                   </form>
                 </Form>
+                <Button className={`mt-5 ${isEditing ? "hidden" : ""}`} onClick={() => setIsEditing(true)}>
+                  Editar entrega
+                </Button>
               </div>
             </div>
           ) : (

@@ -1,7 +1,18 @@
 import { SubjectCard } from "@/components/students/SubjectCard";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import { Link } from "react-router-dom";
 
-export const Lobby = ({studentData, subjectData, activitiesData}: {studentData: any, subjectData: any, activitiesData: any}) => {
+export const Lobby = ({
+  studentData,
+  subjectData,
+  activitiesData,
+}: {
+  studentData: any;
+  subjectData: any;
+  activitiesData: any;
+}) => {
+
+  console.log(activitiesData);
   return (
     <>
       {/* 👇 subjects side */}
@@ -33,10 +44,22 @@ export const Lobby = ({studentData, subjectData, activitiesData}: {studentData: 
           <div className="flex flex-col gap-5">
             {activitiesData && activitiesData.data.length > 0 ? (
               activitiesData.data.map((activity: any) => (
-                <div key={activity.id} className="flex flex-col gap-2">
-                  <span className="text-lg">{activity.nombre}</span>
-                  <span className="text-sm">{activity.descripcion}</span>
-                </div>
+                <Link to={`/students/${activity.nombre_asignatura}/${activity.actividad_id}`}>
+                  <div
+                    key={activity.id}
+                    className="flex items-center gap-2 bg-zinc-800 font-semibold rounded-sm px-4 py-3"
+                  >
+                    <div className="bg-gradient-to-t from-[#902582] to-blue-600 dark:text-white text-black px-2 py-1 rounded-xl font-jetbrains">
+                      {activity.nombre_asignatura.substring(0, 2)}
+                    </div>
+                    <div className="flex flex-col cursor-pointer ">
+                      <span className="text-lg">{activity.titulo}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Vence el {new Date(activity.fecha_fin).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
               ))
             ) : (
               <div>No hay actividades pendientes</div>
