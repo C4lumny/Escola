@@ -25,23 +25,25 @@ import { ArrowLeftCircle, CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useSubjectContext } from "@/contexts/subjectProvider";
+import { useActivityContext } from "@/contexts/activityProvider";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   titulo: z
     .string({ required_error: "Por favor ingrese un titulo de la actividad" })
     .min(5, {
       message: "El titulo de la actividad debe tener al menos 5 caracteres",
-    })
-    .max(15, {
-      message: "El titulo de la actividad no debe tener más de 15 caracteres",
+    })  
+    .max(40, {
+      message: "El titulo de la actividad no debe tener más de 40 caracteres",
     }),
   descripcion: z
     .string({ required_error: "Por favor ingrese un nombre" })
     .min(5, {
       message: "La descripción debe tener al menos 5 caracteres",
     })
-    .max(50, {
-      message: "La descripción no debe tener más de 20 caracteres",
+    .max(200, {
+      message: "La descripción no debe tener más de 200 caracteres",
     }),
   date: z.object(
     {
@@ -55,23 +57,36 @@ const formSchema = z.object({
   estado: z.string({ required_error: "Por favor seleccione un estado" }),
 });
 
-export const UpdateActivity = ({ activity }: { activity: any }) => {
+export const UpdateActivity = () => {
   const { apiRequest } = useRequest();
   const { subject } = useSubjectContext();
+  const { activity } = useActivityContext();
   const today = startOfToday();
   const navigate = useNavigate();
-  console.log(activity);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       titulo: "",
       descripcion: "",
-      date: {},
-    },
+      date: {
+        from: undefined,
+        to: undefined,
+      },
+      estado: "", 
+    }
   });
 
+  useEffect(() => {
+    form.setValue("titulo", activity.titulo);
+    form.setValue("descripcion", activity.descripcion);
+    form.setValue("date", {
+      from: new Date(activity.fecha_inicio),
+      to: new Date(activity.fecha_fin),
+    });
+  }, []);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const activity = {
+    const updatedActivity = {
       titulo: values.titulo,
       descripcion: values.descripcion,
       asignatura: subject.id,
@@ -82,7 +97,10 @@ export const UpdateActivity = ({ activity }: { activity: any }) => {
       estado: values.estado,
     };
 
-    const response = await apiRequest(activity, "activities", "post");
+    const data = { activity, updatedActivity }
+    console.log(data);
+
+    const response = await apiRequest(data, "activities", "put");
     if (!response.error) {
       toast.success("Actividad creada con exito");
       form.reset();
@@ -96,8 +114,7 @@ export const UpdateActivity = ({ activity }: { activity: any }) => {
       <ArrowLeftCircle className="cursor-pointer size-10" onClick={() => navigate(-2)} />
       <br />
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Crear actividades</h1>
-        <p className="text-muted-foreground">Aqui puedes crear las actividades que desees para tu sistema.</p>
+        <h1 className="text-xl font-semibold tracking-tight">Actualizar actividad</h1>
       </div>
       <Separator className="mt-8" />
       <Form {...form}>
@@ -208,7 +225,7 @@ export const UpdateActivity = ({ activity }: { activity: any }) => {
               </FormItem>
             )}
           />
-          <Button type="submit">Crear actividad</Button>
+          <Button type="submit">Actualizar actividad</Button>
         </form>
       </Form>
     </div>

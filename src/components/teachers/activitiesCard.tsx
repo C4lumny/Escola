@@ -46,6 +46,10 @@ export const TeachersActivitiesCard = ({ activity, mutate }: any) => {
             <span className="text-sm text-muted-foreground">
               Fecha de vencimiento: {new Date(activity.fecha_fin).toLocaleDateString()}
             </span>
+            <span className={`text-base ${activity.estado ? "text-green-500" : "text-[#E11D48]"}`}>
+              {" "}
+              Estado: {activity.estado ? "Activa" : "Inactiva"}
+            </span>
           </div>
           <div className="flex gap-5 justify-end items-center mr-12 w-28 h-full cursor-pointer">
             <AlertDialog>

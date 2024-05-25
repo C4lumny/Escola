@@ -12,12 +12,11 @@ import { SubjectProvider } from "@/contexts/subjectProvider";
 import { ActivityProvider } from "@/contexts/activityProvider";
 import { CreateActivities } from "./createActivity";
 import { UpdateActivity } from "./updateActivity";
-import { useActivityContext } from "@/contexts/activityProvider";
+import { ActivityStudents } from "./activityStudents";
 // import { ActivitySolved } from "./activitySolve";
 
 export const Teacher = () => {
   const { user } = useUserContext();
-  const { activity } = useActivityContext();
   const { data: teacherData, loading: teacherLoading } = useGet(`teachers/${user?.identificacion}`);
   const { data: subjectData, loading: subjectLoading } = useGet(`subjects/teachers/${user?.identificacion}`);
   return (
@@ -35,8 +34,9 @@ export const Teacher = () => {
                 <Routes>
                   <Route path="/" element={<Lobby teacherData={teacherData} subjectData={subjectData} />} />
                   <Route path=":subject" element={<TeacherSubjectActivities />} />
+                  <Route path=":subject/:activity_id" element={<ActivityStudents />} />
                   <Route path=":subject/create-activity" element={<CreateActivities />} />
-                  <Route path=":subject/update-activity" element={<UpdateActivity activity={activity} />} />
+                  <Route path=":subject/update-activity" element={<UpdateActivity />} />
                   {/* <Route path=":subject/:activity" element={<ActivitySolved />} /> */}
                 </Routes>
               </ActivityProvider>

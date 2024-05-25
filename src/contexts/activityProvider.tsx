@@ -2,7 +2,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 interface ActivityContextData {
   activity: any;
-  createActivity: (user: any) => void;
+  createActivity: (activity: any) => void;
 }
 
 const ActivityContext = createContext<ActivityContextData>({

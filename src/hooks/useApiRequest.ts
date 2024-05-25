@@ -6,7 +6,7 @@ export const useRequest = () => {
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const apiRequest = async (data: any, endpoint: string, methodType: 'post' | 'put' | 'delete' | 'get') => {
+  const apiRequest = async (data: any, endpoint: string, methodType: 'post' | 'put' | 'delete' | 'get' | 'patch') => {
     try {;
       const response = await escolaApi[methodType](endpoint, data);
       setApiData(response);
