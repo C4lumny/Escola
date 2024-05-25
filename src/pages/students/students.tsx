@@ -24,7 +24,7 @@ export const Student = () => {
         </div>
       ) : (
         <div className="flex flex-col min-h-screen w-full">
-          <Header />
+          <Header isStudent />
           <div className="mt-20 mb-14 container h-full grid grid-cols-3 flex-1">
             <SubjectProvider>
               <Routes>

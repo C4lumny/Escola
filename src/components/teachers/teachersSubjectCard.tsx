@@ -17,6 +17,8 @@ export const TeachersSubjectCard = ({ subject }: { subject: any }) => {
     createSubject(subject);
   };
 
+  console.log(subject);
+
   return (
     <div className="relative flex w-[16.8rem] flex-col rounded-xl bg-white dark:bg-background dark:border-slate-400 dark:border-2 bg-clip-border text-gray-700 shadow-md">
       <div className="relative mx-4 -mt-6 h-40 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40 bg-gradient-to-t from-[#902582] to-blue-600">

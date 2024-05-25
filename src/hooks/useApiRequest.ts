@@ -9,7 +9,6 @@ export const useRequest = () => {
   const apiRequest = async (data: any, endpoint: string, methodType: 'post' | 'put' | 'delete' | 'get') => {
     try {;
       const response = await escolaApi[methodType](endpoint, data);
-      console.log(response);
       setApiData(response);
       setError(null);
       setLoading(false);

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const ActivitiesCard = ({ activity }: any) => {
   return (
-    <div className="w-full h-24 border">
+    <div className="w-full h-24 border rounded-full">
       <div className="flex space-x-4">
         <div className="space-x-1 h-24 w-28 overflow-hidden ">
           <img className="h-24 w-full object-fill" src={ActivityIcon} alt={activity.titulo} />
