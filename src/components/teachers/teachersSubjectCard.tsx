@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSubjectContext } from "@/contexts/subjectProvider";
 
-export const SubjectCard = ({ subject }: { subject: any }) => {
+export const TeachersSubjectCard = ({ subject }: { subject: any }) => {
   const navigate = useNavigate();
   const { createSubject } = useSubjectContext();
 
@@ -12,10 +12,12 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
   }
 
   const handleClick = () => {
-    navigate(`/students/${subject.nombre}`);
+    navigate(`/teachers/${subject.nombre}`);
 
     createSubject(subject);
   };
+
+  console.log(subject);
 
   return (
     <div className="relative flex w-[16.8rem] flex-col rounded-xl bg-white dark:bg-background dark:border-slate-400 dark:border-2 bg-clip-border text-gray-700 shadow-md">
@@ -33,7 +35,7 @@ export const SubjectCard = ({ subject }: { subject: any }) => {
         </p>
       </div>
       <div className="p-6 pt-0">
-        <Link to={`/students/${subject.nombre}`}>
+        <Link to={`/teachers/${subject.nombre}`}>
           <button
             onClick={handleClick}
             data-ripple-light="true"

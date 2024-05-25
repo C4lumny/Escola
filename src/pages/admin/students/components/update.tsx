@@ -37,9 +37,9 @@ import {
 } from "@/components/ui/select";
 // 👇 Icons
 import { RefreshCcwDot } from "lucide-react";
-import { DataTable } from "@/components/viewTable";
+import { DataTable } from "@/components/app/viewTable";
 import { toast } from "sonner";
-import { TableSkeleton } from "@/components/table-skeleton";
+import { TableSkeleton } from "@/components/app/table-skeleton";
 
 const formSchema = z.object({
   document_type: z.string({

@@ -1,37 +1,22 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Icons } from "@/components/ui/icons";
+import { Calendar } from "@/components/ui/calendar";
 
 import { useGet } from "@/hooks/useGet";
+import { AverageGrades } from "./components/averageGrades";
+import { useState } from "react";
 
 export const DashboardPage = () => {
-  const { data, loading } = useGet("/FlyEaseApi/Boletos/GetAll");
-  let currentYeartotal = 0;
-  let lastYearTotal = 0;
-  let yearlyTotalDifferencePercentage = 0;
+  const { data, loading } = useGet("/statistics");
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
-  if (!loading && data) {
-    const boletos = (data as any).response;
-    const añoActual = new Date().getFullYear();
-    const añoAnterior = añoActual - 1;
-
-    const boletosAñoActual = boletos.filter(
-      (boleto: any) => new Date(boleto.fecharegistro).getFullYear() === añoActual
-    );
-    const boletosAñoAnterior = boletos.filter(
-      (boleto: any) => new Date(boleto.fecharegistro).getFullYear() === añoAnterior
-    );
-
-    currentYeartotal = boletosAñoActual.reduce((sum: number, boleto: any) => sum + boleto.precio, 0);
-    lastYearTotal = boletosAñoAnterior.reduce((sum: number, boleto: any) => sum + boleto.precio, 0);
-
-    yearlyTotalDifferencePercentage = ((currentYeartotal - lastYearTotal) / lastYearTotal) * 100;
-  }
-
-  return (
+  if (data) console.log(data);
+  return loading ? (
+    <div>Cargando</div>
+  ) : (
     <>
       <div className="hidden flex-col md:flex">
-        <div className="flex-1 space-y-4 mt-10 p-8 pt-6">
+        <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-10">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           </div>
@@ -43,7 +28,7 @@ export const DashboardPage = () => {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total recaudado</CardTitle>
+                    <CardTitle className="text-sm font-medium">Nro. de Estudiantes</CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -58,19 +43,13 @@ export const DashboardPage = () => {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
-                      {loading ? (
-                        <Icons.spinner className="size-6 animate-spin" />
-                      ) : (
-                        `$${currentYeartotal.toLocaleString("es-ES", { minimumFractionDigits: 2 })}`
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground"> {yearlyTotalDifferencePercentage}% que el año anterior</p>
+                    <div className="text-2xl font-bold text-blue-400">{data.data.totalEstudiantes}</div>
+                    <p className="text-xs text-muted-foreground">Estudiantes en la institución</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+                    <CardTitle className="text-sm font-medium">Cursos activos</CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -87,13 +66,13 @@ export const DashboardPage = () => {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
-                    <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+                    <div className="text-2xl font-bold text-pink-400">{data.data.totalCursos}</div>
+                    <p className="text-xs text-muted-foreground">Cursos en la institucióh</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                    <CardTitle className="text-sm font-medium">Profesores</CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -109,13 +88,13 @@ export const DashboardPage = () => {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+12,234</div>
-                    <p className="text-xs text-muted-foreground">+19% from last month</p>
+                    <div className="text-2xl font-bold text-yellow-400">{data.data.totalProfesores}</div>
+                    <p className="text-xs text-muted-foreground">Dictan clases en tu institución</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+                    <CardTitle className="text-sm font-medium">Asignaturas</CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -130,24 +109,24 @@ export const DashboardPage = () => {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
-                    <p className="text-xs text-muted-foreground">+201 since last hour</p>
+                    <div className="text-2xl font-bold text-green-500">{data.data.totalAsignaturas}</div>
+                    <p className="text-xs text-muted-foreground">activas en tu institución</p>
                   </CardContent>
                 </Card>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Overview</CardTitle>
+                    <CardTitle>Promedio de notas</CardTitle>
                   </CardHeader>
-                  <CardContent className="pl-2">{/* <Overview /> */}</CardContent>
+                  <CardContent className="pl-2">
+                    <AverageGrades averageGrades={data.data.notas} />
+                  </CardContent>
                 </Card>
                 <Card className="col-span-3">
-                  <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
-                    <CardDescription>You made 265 sales this month.</CardDescription>
-                  </CardHeader>
-                  <CardContent>{/* <RecentSales /> */}</CardContent>
+                  <CardContent className="w-full h-full flex justify-center items-center">
+                    <Calendar mode="single" selected={date} onSelect={setDate} className="shadow" />
+                  </CardContent>
                 </Card>
               </div>
             </TabsContent>

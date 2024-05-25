@@ -33,8 +33,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     try {
       const request = await apiRequest(credentials, "/login", "post");
       const response = request.apiData;
-      console.log(response)
-
       if (response.statusCode === 200) {
         setIsLoading(false);
         createUser({ username: credentials.username, password: credentials.password, identificacion: response.data.identificacion });
@@ -42,6 +40,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           navigate("/admins/dashboard");
         } else if(response.data.tipo_usuario == "Estudiante"){
           navigate("/students");
+        } else if(response.data.tipo_usuario == "Profesor"){
+          navigate("/teachers");
         }
       }
     } catch (error) {

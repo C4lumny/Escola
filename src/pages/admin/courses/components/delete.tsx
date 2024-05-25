@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { TableSkeleton } from "@/components/table-skeleton";
+import { TableSkeleton } from "@/components/app/table-skeleton";
 
 export const DeleteCourse = () => {
   const { data, loading, mutate } = useGet("courses");

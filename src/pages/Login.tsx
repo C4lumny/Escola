@@ -1,6 +1,6 @@
 // UI ImportS 👇
-import { UserAuthForm } from "@/components/user-auth-form";
-import { ModeToggle } from "@/components/mode-toggle";
+import { UserAuthForm } from "@/components/app/user-auth-form";
+import { ModeToggle } from "@/components/app/mode-toggle";
 // Icons and images 👇
 import EscolaLogo from "@/assets/escola-high-resolution-logo-white-transparent.png";
 import BoysStudying from "@/assets/niños-estudiando-fotologin.jpg";

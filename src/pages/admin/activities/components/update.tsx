@@ -29,14 +29,14 @@ import {
 } from "@/components/ui/select";
 // 👇 Icons
 import { CalendarIcon, RefreshCcwDot } from "lucide-react";
-import { DataTable } from "@/components/viewTable";
+import { DataTable } from "@/components/app/viewTable";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format, isBefore, startOfToday } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
-import { TableSkeleton } from "@/components/table-skeleton";
+import { TableSkeleton } from "@/components/app/table-skeleton";
 
 const formSchema = z.object({
   titulo: z

@@ -66,7 +66,6 @@ export const ActivitySolved = () => {
     if (developmentData && developmentData.data.length > 0) {
       form.setValue("response", developmentData.data[0].solucion);
     }
-    console.log("Hola mundo");
   }, [developmentData]);
 
   return (
@@ -92,7 +91,7 @@ export const ActivitySolved = () => {
           </span>
           <div className="mt-3">
             Calificación:{" "}
-            <span className="text-muted-foreground">{activitiesData.data[0].observacion ? activitiesData.data[0].observacion : "Sin calificar"}</span>
+            <span className="text-muted-foreground">{developmentData.data[0].nota ? developmentData.data[0].nota : "Sin calificar"}</span>
           </div>
           <Separator className="mt-5 " />
           {developmentData.data.length > 0 ? (

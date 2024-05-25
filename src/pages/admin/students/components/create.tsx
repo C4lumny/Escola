@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { useGet } from "@/hooks/useGet";
 import { toast } from "sonner";
-import { FormSkeleton } from "@/components/form-skeleton";
+import { FormSkeleton } from "@/components/app/form-skeleton";
 
 const formSchema = z.object({
   document_type: z.string({ required_error: "Por favor seleccione un tipo de documento" }),

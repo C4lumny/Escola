@@ -24,7 +24,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
-import { FormSkeleton } from "@/components/form-skeleton";
+import { FormSkeleton } from "@/components/app/form-skeleton";
 
 const formSchema = z.object({
   titulo: z

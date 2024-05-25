@@ -25,7 +25,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { FormSkeleton } from "@/components/form-skeleton";
+import { FormSkeleton } from "@/components/app/form-skeleton";
 
 const formSchema = z.object({
   nombre: z.string().min(2, {

@@ -2,7 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 
 import { Plus, Minus, RefreshCcw, View } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Nav } from "@/components/nav";
+import { Nav } from "@/components/app/nav";
 import { ViewSubjects } from "./components/view";
 import { CreateSubjects } from "./components/create";
 import { UpdateSubject } from "./components/update";

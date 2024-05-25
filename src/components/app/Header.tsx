@@ -2,11 +2,11 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/compon
 import { buttonVariants } from "@/components/ui/button";
 //Assets
 import { Icons } from "@/components/ui/icons";
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "../app/mode-toggle";
 import { LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export const Header = () => {
+export const Header = ({ isStudent }: { isStudent: boolean }) => {
   const handleClick = () => {
     localStorage.clear();
   };
@@ -16,7 +16,7 @@ export const Header = () => {
       <NavigationMenu className="mx-auto">
         <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between ">
           <NavigationMenuItem className="font-bold flex">
-            <Link to={'/students'}>
+            <Link to={isStudent ? "/students" : "/teachers"}>
               <div className="ml-2 font-bold text-xl flex">
                 <Icons.LogoIcon />
                 Sadie / Escola
