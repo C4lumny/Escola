@@ -8,15 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { useGet } from "@/hooks/useGet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import {
   Sheet,
   SheetClose,
@@ -39,11 +31,7 @@ import {
 import { CalendarIcon, RefreshCcwDot } from "lucide-react";
 import { DataTable } from "@/components/viewTable";
 import { toast } from "sonner";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format, isBefore, startOfToday } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
@@ -79,6 +67,7 @@ const formSchema = z.object({
   asignatura: z.string({
     required_error: "Por favor seleccione una asignatura",
   }),
+  estado: z.string({ required_error: "Por favor seleccione un estado" }),
 });
 
 export const UpdateActivity = () => {
@@ -87,7 +76,7 @@ export const UpdateActivity = () => {
   const [filter, setFilter] = useState("");
   const { apiRequest } = useRequest();
   const today = startOfToday();
-  const columnTitles = ["ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = ["ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura", "Estado"];
 
   let dataTable: string[] = [];
   let filteredData: string[] = [];
@@ -120,6 +109,7 @@ export const UpdateActivity = () => {
     form.setValue("titulo", activity.titulo);
     form.setValue("descripcion", activity.descripcion);
     form.setValue("asignatura", activity.asignatura.id.toString());
+    form.setValue("estado", activity.estado == true ? "1" : "0");
   };
 
   if (!loading) {
@@ -132,13 +122,11 @@ export const UpdateActivity = () => {
           fecha_inicio: new Date(activity.fecha_inicio).toLocaleDateString(),
           fecha_fin: new Date(activity.fecha_fin).toLocaleDateString(),
           nombre_asignatura: activity.nombre_asignatura,
+          estado: activity.estado == true ? "Activo" : "Inactivo",
           sheet: (
             <Sheet>
               <SheetTrigger>
-                <RefreshCcwDot
-                  className="cursor-pointer"
-                  onClick={() => handleRefreshClick(activity)}
-                />
+                <RefreshCcwDot className="cursor-pointer" onClick={() => handleRefreshClick(activity)} />
               </SheetTrigger>
               <SheetContent className="overflow-auto">
                 <SheetHeader>
@@ -148,9 +136,7 @@ export const UpdateActivity = () => {
                   <Form {...form}>
                     <form
                       className="space-y-4"
-                      onSubmit={form.handleSubmit((updatedStudent) =>
-                        handleUpdateClick(updatedStudent, activity)
-                      )}
+                      onSubmit={form.handleSubmit((updatedStudent) => handleUpdateClick(updatedStudent, activity))}
                     >
                       {/* 👇 Espacio para el input de nro_documento  */}
                       <FormField
@@ -160,14 +146,9 @@ export const UpdateActivity = () => {
                           <FormItem>
                             <FormLabel>Titulo</FormLabel>
                             <FormControl>
-                              <Input
-                                placeholder="Actividad II Ingles"
-                                {...field}
-                              />
+                              <Input placeholder="Actividad II Ingles" {...field} />
                             </FormControl>
-                            <FormDescription>
-                              El titulo de la actividad a ingresar.
-                            </FormDescription>
+                            <FormDescription>El titulo de la actividad a ingresar.</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -186,9 +167,7 @@ export const UpdateActivity = () => {
                                 {...field}
                               />
                             </FormControl>
-                            <FormDescription>
-                              La descripción de la actividad a ingresar.
-                            </FormDescription>
+                            <FormDescription>La descripción de la actividad a ingresar.</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -199,9 +178,7 @@ export const UpdateActivity = () => {
                         name="date"
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
-                            <FormLabel>
-                              Rango de fecha de la actividad
-                            </FormLabel>
+                            <FormLabel>Rango de fecha de la actividad</FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
@@ -217,11 +194,7 @@ export const UpdateActivity = () => {
                                     {field.value?.from ? (
                                       field.value.to ? (
                                         <>
-                                          {format(
-                                            field.value.from,
-                                            "LLL dd, y"
-                                          )}{" "}
-                                          -{" "}
+                                          {format(field.value.from, "LLL dd, y")} -{" "}
                                           {format(field.value.to, "LLL dd, y")}
                                         </>
                                       ) : (
@@ -233,10 +206,7 @@ export const UpdateActivity = () => {
                                   </Button>
                                 </FormControl>
                               </PopoverTrigger>
-                              <PopoverContent
-                                className="w-auto p-0"
-                                align="start"
-                              >
+                              <PopoverContent className="w-auto p-0" align="start">
                                 <Calendar
                                   initialFocus
                                   mode="range"
@@ -249,8 +219,7 @@ export const UpdateActivity = () => {
                               </PopoverContent>
                             </Popover>
                             <FormDescription>
-                              Usuario del estudiante, importante para el inicio
-                              de sesión
+                              Usuario del estudiante, importante para el inicio de sesión
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -262,13 +231,8 @@ export const UpdateActivity = () => {
                         name="asignatura"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>
-                              Asignatura asignada a la actividad
-                            </FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
+                            <FormLabel>Asignatura asignada a la actividad</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger className="w-[280px]">
                                   <SelectValue placeholder="Seleccione una asignatura" />
@@ -278,18 +242,13 @@ export const UpdateActivity = () => {
                                 <SelectGroup>
                                   <SelectLabel>Asignaturas</SelectLabel>
                                   {subjectsData.data.data.length > 0 ? (
-                                    subjectsData.data.data.map(
-                                      (subject: any) => {
-                                        return (
-                                          <SelectItem
-                                            key={subject.id.toString()}
-                                            value={subject.id.toString()}
-                                          >
-                                            {subject.nombre}
-                                          </SelectItem>
-                                        );
-                                      }
-                                    )
+                                    subjectsData.data.data.map((subject: any) => {
+                                      return (
+                                        <SelectItem key={subject.id.toString()} value={subject.id.toString()}>
+                                          {subject.nombre}
+                                        </SelectItem>
+                                      );
+                                    })
                                   ) : (
                                     <div>No hay asignaturas activos</div>
                                   )}
@@ -297,9 +256,34 @@ export const UpdateActivity = () => {
                               </SelectContent>
                             </Select>
                             <FormDescription>
-                              Seleccione el nombre del curso que se ha asignado
-                              a esta materia
+                              Seleccione el nombre del curso que se ha asignado a esta materia
                             </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* 👇 Espacio para el select de tipo de documento */}
+                      <FormField
+                        control={form.control}
+                        name="estado"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Estado de la actividad</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="w-[280px]">
+                                  <SelectValue placeholder="Seleccione un estado" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>Estado</SelectLabel>
+                                  <SelectItem value="0">Inactivo</SelectItem>
+                                  <SelectItem value="1">Activo</SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                            <FormDescription>Seleccione el estado de la actividad.</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -318,9 +302,7 @@ export const UpdateActivity = () => {
         } || [])
     );
 
-    filteredData = dataTable.filter((item: any) =>
-      item.titulo.toString().includes(filter)
-    );
+    filteredData = dataTable.filter((item: any) => item.titulo.toString().includes(filter));
   }
   return (
     <div>
@@ -329,12 +311,8 @@ export const UpdateActivity = () => {
       ) : (
         <div className="space-y-5">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">
-              Actualizar actividades
-            </h1>
-            <p className="text-muted-foreground">
-              Aquí puedes actualizar las actividades.
-            </p>
+            <h1 className="text-xl font-semibold tracking-tight">Actualizar actividades</h1>
+            <p className="text-muted-foreground">Aquí puedes actualizar las actividades.</p>
           </div>
           <Separator className="my-5" />
           <div className="flex items-center py-4">

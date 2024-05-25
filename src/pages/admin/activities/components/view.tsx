@@ -13,6 +13,7 @@ export const ViewActivities = () => {
   let filteredData: string[] = [];
 
   if (!loading) {
+    console.log(data.data);
     dataTable = data.data.map((activity: any) => ({
       id: activity.id,
       titulo: activity.titulo,
@@ -20,6 +21,7 @@ export const ViewActivities = () => {
       fecha_inicio: new Date(activity.fecha_inicio).toLocaleDateString(),
       fecha_fin: new Date(activity.fecha_fin).toLocaleDateString(),
       nombre_asignatura: activity.nombre_asignatura,
+      estado: activity.estado == true ? 'Activo' : 'Inactivo'
     }));
 
     filteredData = dataTable.filter((activity: any) =>
@@ -27,7 +29,7 @@ export const ViewActivities = () => {
     );
   }
 
-  const columnTitles = ["ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = ["ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura", "Estado"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);

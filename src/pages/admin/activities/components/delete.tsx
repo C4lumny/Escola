@@ -46,6 +46,7 @@ export const DeleteActivity = () => {
           fecha_inicio: new Date(activity.fecha_inicio).toLocaleDateString(),
           fecha_fin: new Date(activity.fecha_fin).toLocaleDateString(),
           nombre_asignatura: activity.nombre_asignatura,
+          estado: activity.estado == true ? "Activo" : "Inactivo",
         } || [])
     );
 
@@ -54,7 +55,7 @@ export const DeleteActivity = () => {
     );
   }
 
-  const columnTitles = ["", "ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura"];
+  const columnTitles = ["", "ID", "Titulo", "Descripción", "Fecha inicio", "Fecha fin", "Nombre de la asignatura", "Estado"];
 
   const handleFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.currentTarget.value);

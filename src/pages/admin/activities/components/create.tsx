@@ -6,15 +6,7 @@ import { useGet } from "@/hooks/useGet";
 // 👇 UI imports
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -29,11 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { isBefore, startOfToday, format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { FormSkeleton } from "@/components/form-skeleton";
@@ -67,6 +55,7 @@ const formSchema = z.object({
   asignatura: z.string({
     required_error: "Por favor seleccione una asignatura",
   }),
+  estado: z.string({ required_error: "Por favor seleccione un estado" }),
 });
 
 export const CreateActivities = () => {
@@ -87,10 +76,10 @@ export const CreateActivities = () => {
 
     const response = await apiRequest(values, "activities", "post");
     if (!response.error) {
-      toast.success("Estudiante creado con exito");
+      toast.success("Actividad creada con exito");
       form.reset();
     } else {
-      toast.error("Error al crear el estudiante", {});
+      toast.error("Error al crear la actividad", {});
     }
   };
 
@@ -101,12 +90,8 @@ export const CreateActivities = () => {
       ) : (
         <>
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">
-              Crear actividades
-            </h1>
-            <p className="text-muted-foreground">
-              Aqui puedes crear las actividades que desees para tu sistema.
-            </p>
+            <h1 className="text-xl font-semibold tracking-tight">Crear actividades</h1>
+            <p className="text-muted-foreground">Aqui puedes crear las actividades que desees para tu sistema.</p>
           </div>
           <Separator className="mt-8" />
           <Form {...form}>
@@ -121,9 +106,7 @@ export const CreateActivities = () => {
                     <FormControl>
                       <Input placeholder="Actividad II Ingles" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      El titulo de la actividad a ingresar.
-                    </FormDescription>
+                    <FormDescription>El titulo de la actividad a ingresar.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -136,15 +119,9 @@ export const CreateActivities = () => {
                   <FormItem>
                     <FormLabel>Descripción</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="En esta actividad aprenderás a..."
-                        className="resize-none"
-                        {...field}
-                      />
+                      <Textarea placeholder="En esta actividad aprenderás a..." className="resize-none" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      La descripción de la actividad a ingresar.
-                    </FormDescription>
+                    <FormDescription>La descripción de la actividad a ingresar.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -171,8 +148,7 @@ export const CreateActivities = () => {
                             {field.value?.from ? (
                               field.value.to ? (
                                 <>
-                                  {format(field.value.from, "LLL dd, y")} -{" "}
-                                  {format(field.value.to, "LLL dd, y")}
+                                  {format(field.value.from, "LLL dd, y")} - {format(field.value.to, "LLL dd, y")}
                                 </>
                               ) : (
                                 format(field.value.from, "LLL dd, y")
@@ -195,10 +171,7 @@ export const CreateActivities = () => {
                         />
                       </PopoverContent>
                     </Popover>
-                    <FormDescription>
-                      Usuario del estudiante, importante para el inicio de
-                      sesión
-                    </FormDescription>
+                    <FormDescription>Usuario del estudiante, importante para el inicio de sesión</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -210,10 +183,7 @@ export const CreateActivities = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Asignatura asignada a la actividad</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="w-[280px]">
                           <SelectValue placeholder="Seleccione una asignatura" />
@@ -225,10 +195,7 @@ export const CreateActivities = () => {
                           {subjectsData.data.data.length > 0 ? (
                             subjectsData.data.data.map((subject: any) => {
                               return (
-                                <SelectItem
-                                  key={subject.id.toString()}
-                                  value={subject.id.toString()}
-                                >
+                                <SelectItem key={subject.id.toString()} value={subject.id.toString()}>
                                   {subject.nombre}
                                 </SelectItem>
                               );
@@ -239,10 +206,33 @@ export const CreateActivities = () => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <FormDescription>
-                      Seleccione el nombre del curso que se ha asignado a esta
-                      materia
-                    </FormDescription>
+                    <FormDescription>Seleccione el nombre del curso que se ha asignado a esta materia</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* 👇 Espacio para el select de tipo de documento */}
+              <FormField
+                control={form.control}
+                name="estado"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Estado de la actividad</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-[280px]">
+                          <SelectValue placeholder="Seleccione un estado" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Estado</SelectLabel>
+                          <SelectItem value="0">Inactivo</SelectItem>
+                          <SelectItem value="1">Activo</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>Seleccione el estado de la actividad.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
