@@ -5,6 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useGet } from "@/hooks/useGet";
 import { AverageGrades } from "./components/averageGrades";
 import { useState } from "react";
+import { DashboardSkeleton } from "@/components/app/dashboard-skeleton";
 
 export const DashboardPage = () => {
   const { data, loading } = useGet("/statistics");
@@ -12,7 +13,7 @@ export const DashboardPage = () => {
 
   if (data) console.log(data);
   return loading ? (
-    <div>Cargando</div>
+    <DashboardSkeleton />
   ) : (
     <>
       <div className="hidden flex-col md:flex">
