@@ -64,7 +64,7 @@ export const Login = () => {
                 <div className="pt-5 grid grid-cols-3 place-items-center">
                   <div className="flex flex-col items-center gap-2">
                     <Avatar className="size-20">
-                      <AvatarImage src="src\assets\profile-pictures\pfp-nathan.jpg" alt="nathan" />
+                      <AvatarImage src="/src/assets/profile-pictures/pfp-nathan.jpg" alt="nathan" />
                       <AvatarFallback>Nathan Ospino</AvatarFallback>
                     </Avatar>
                     <span className="text-inherit text-xs">FrontEnd Developer</span>
@@ -72,7 +72,7 @@ export const Login = () => {
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <Avatar className="size-20">
-                      <AvatarImage src="src\assets\profile-pictures\pfp-jesus.jpg" alt="nathan" />
+                      <AvatarImage src="/src/assets/profile-pictures/pfp-jesus.jpg" alt="nathan" />
                       <AvatarFallback>Jesus Sanchez</AvatarFallback>
                     </Avatar>
                     <span className="text-inherit text-xs">Backend Developer</span>
@@ -80,7 +80,7 @@ export const Login = () => {
                   </div>
                   <div className="flex flex-col items-center gap-2 ">
                     <Avatar className="size-20">
-                      <AvatarImage src="src\assets\profile-pictures\pfp-jose.jpg" alt="nathan" />
+                      <AvatarImage src="/src/assets/profile-pictures/pfp-jose.jpg" alt="nathan" />
                       <AvatarFallback>Jose Restrepo</AvatarFallback>
                     </Avatar>
                     <span className="text-inherit text-xs">FullStack Developer</span>
