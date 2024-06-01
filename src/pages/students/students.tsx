@@ -18,7 +18,7 @@ export const Student = () => {
   
   return (
     <>
-      {studentLoading && subjectLoading && activitiesLoading ? (
+      {studentLoading || subjectLoading || activitiesLoading ? (
         <div className="h-screen flex items-center justify-center">
           <Loader />
         </div>
