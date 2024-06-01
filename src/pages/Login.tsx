@@ -4,6 +4,9 @@ import { ModeToggle } from "@/components/app/mode-toggle";
 // Icons and images 👇
 import EscolaLogo from "@/assets/escola-high-resolution-logo-white-transparent.png";
 import BoysStudying from "@/assets/niños-estudiando-fotologin.jpg";
+import Nathanpfp from "@/assets/profile-pictures/pfp-nathan.jpg";
+import Jesuspfp from "@/assets/profile-pictures/pfp-jesus.jpg";
+import Josepfp from "@/assets/profile-pictures/pfp-jose.jpg";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import {
@@ -21,7 +24,7 @@ export const Login = () => {
   return (
     <>
       {/* Lado izquierdo de la pagina (imagen) 👇 */}
-      <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div className="absolute right-4 top-4 md:right-8 md:top-8 flex gap-2">
           <Dialog>
             <DialogTrigger>
@@ -29,7 +32,7 @@ export const Login = () => {
                 <Info className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-screen h-[62%]">
+            <DialogContent className="w-screen h-[30rem]">
               <DialogHeader>
                 <DialogTitle>Información sobre el aplicativo</DialogTitle>
                 <DialogDescription>
@@ -64,7 +67,7 @@ export const Login = () => {
                 <div className="pt-5 grid grid-cols-3 place-items-center">
                   <div className="flex flex-col items-center gap-2">
                     <Avatar className="size-20">
-                      <AvatarImage src="/src/assets/profile-pictures/pfp-nathan.jpg" alt="nathan" />
+                      <AvatarImage src={Nathanpfp} alt="nathan" />
                       <AvatarFallback>Nathan Ospino</AvatarFallback>
                     </Avatar>
                     <span className="text-inherit text-xs">FrontEnd Developer</span>
@@ -72,7 +75,7 @@ export const Login = () => {
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <Avatar className="size-20">
-                      <AvatarImage src="/src/assets/profile-pictures/pfp-jesus.jpg" alt="nathan" />
+                      <AvatarImage src={Jesuspfp} alt="jesus" />
                       <AvatarFallback>Jesus Sanchez</AvatarFallback>
                     </Avatar>
                     <span className="text-inherit text-xs">Backend Developer</span>
@@ -80,7 +83,7 @@ export const Login = () => {
                   </div>
                   <div className="flex flex-col items-center gap-2 ">
                     <Avatar className="size-20">
-                      <AvatarImage src="/src/assets/profile-pictures/pfp-jose.jpg" alt="nathan" />
+                      <AvatarImage src={Josepfp} alt="jose" />
                       <AvatarFallback>Jose Restrepo</AvatarFallback>
                     </Avatar>
                     <span className="text-inherit text-xs">FullStack Developer</span>
